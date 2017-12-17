@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "defier:patternmolder"
+  },
+  "pattern": [
+    "gsg",
+    "pcp",
+    "gsg"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "g": {
+      "item": "minecraft:gold_ingot"
+    },
+    "s": {
+      "item": "defier:strongstar"
+    },
+    "p": {
+      "item": "defier:pattern"
+    },
+    "c": {
+      "item": "minecraft:cobblestone"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "defier:defierstar"
+  },
+  "pattern": [
+    "sms",
+    "msm",
+    "sms"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "m": {
+      "item": "minecraft:glowstone"
+    },
+    "s": {
+      "item": "minecraft:nether_star"
+    }
+  }
+}

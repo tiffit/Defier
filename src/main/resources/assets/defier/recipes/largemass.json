@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "defier:largemass"
+  },
+  "pattern": [
+    "aoa",
+    "oso",
+    "aoa"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "o": {
+      "item": "minecraft:obsidian"
+    },
+    "s": {
+      "item": "minecraft:nether_star"
+    },
+    "a": {
+      "item": "minecraft:anvil",
+      "data": 0
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "defier:compressor"
+  },
+  "pattern": [
+    "pap",
+    "dsd",
+    "pap"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "p": {
+      "item": "minecraft:sticky_piston"
+    },
+    "s": {
+      "item": "defier:energystar"
+    },
+    "d": {
+      "item": "defier:strongstar"
+    },
+    "a": {
+      "item": "minecraft:anvil",
+      "data": 0
+    }
+  }
+}

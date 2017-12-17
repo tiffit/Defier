@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "defier:items/pattern"
+  },
+  "overrides": [
+        {
+            "predicate": {
+                "defieritem": 1
+            },
+            "model": "defier:item/patternused"
+        }
+    ]
+}

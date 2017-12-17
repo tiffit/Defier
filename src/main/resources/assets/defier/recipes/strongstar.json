@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "defier:strongstar"
+  },
+  "pattern": [
+    "sms",
+    "mdm",
+    "sms"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "m": {
+      "item": "minecraft:obsidian"
+    },
+    "s": {
+      "item": "defier:defierstar"
+    },
+    "d": {
+      "item": "minecraft:diamond_block"
+    }
+  }
+}

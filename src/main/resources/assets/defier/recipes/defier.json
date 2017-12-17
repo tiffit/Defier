@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "defier:defier"
+  },
+  "pattern": [
+    "ses",
+    "ece",
+    "ses"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "c": {
+      "item": "defier:defiercore"
+    },
+    "e": {
+      "item": "defier:energystar"
+    }
+    ,
+    "s": {
+      "item": "defier:strongstar"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+[
+{
+  "modid": "defier",
+  "name": "Defier",
+  "description": "Turn energy into matter.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Tiffit"],
+  "credits": "Tiffit",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["CodeChickenLib"]
+}
+]

@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "defier:energystar"
+  },
+  "pattern": [
+    "sms",
+    "msm",
+    "sms"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "m": {
+      "item": "minecraft:redstone_block"
+    },
+    "s": {
+      "item": "defier:defierstar"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "defier:energyprovider"
+  },
+  "pattern": [
+    " e ",
+    " s ",
+    "isi"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "e": {
+      "item": "defier:energystar"
+    },
+    "s": {
+      "item": "defier:strongstar"
+    },
+    "i": {
+      "item": "minecraft:iron_block"
+    }
+  }
+}

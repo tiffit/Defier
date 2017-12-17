@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "defier:speedstar"
+  },
+  "pattern": [
+    "sms",
+    "msm",
+    "sms"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "m": {
+      "item": "minecraft:sugar"
+    },
+    "s": {
+      "item": "defier:energystar"
+    }
+  }
+}
