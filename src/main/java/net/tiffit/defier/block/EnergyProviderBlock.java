@@ -69,18 +69,26 @@ public class EnergyProviderBlock extends Block implements ITileEntityProvider {
 			return true;
 		}
 		EnergyProviderTileEntity te = (EnergyProviderTileEntity) world.getTileEntity(pos);
-		if(te.getUpgrades() < 8 && !player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == ModItems.speedstar){
-			te.addUpgrade();
+		if(te.getSpeedUpgrades() < 8 && !player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == ModItems.speedstar){
+			te.addSpeedUpgrade();
 			player.inventory.getCurrentItem().setCount(player.inventory.getCurrentItem().getCount()-1);
-			player.sendMessage(new TextComponentString("Added Speed Upgrade " + te.getUpgrades() + "/8"));
+			player.sendMessage(new TextComponentString("Added Speed Upgrade " + te.getSpeedUpgrades() + "/8"));
+		}
+		if(te.getSpeedUpgrades() < 4 && !player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == ModItems.energystar && te.getStorageUpgrades() == player.inventory.getCurrentItem().getMetadata()){
+			te.addStorageUpgrade();
+			player.inventory.getCurrentItem().setCount(player.inventory.getCurrentItem().getCount()-1);
+			player.sendMessage(new TextComponentString("Added Storage Upgrade " + te.getStorageUpgrades() + "/4"));
 		}
 		return true;
 	}
 	
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		EnergyProviderTileEntity te = (EnergyProviderTileEntity) worldIn.getTileEntity(pos);
-		ItemStack upgrade = new ItemStack(ModItems.speedstar, te.getUpgrades());
+		ItemStack upgrade = new ItemStack(ModItems.speedstar, te.getSpeedUpgrades());
 		if (!upgrade.isEmpty())InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), upgrade);
+		for(int i = 0; i < te.getStorageUpgrades(); i++){
+			InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.energystar, 1, i));
+		}
 		super.breakBlock(worldIn, pos, state);
 	}
 	

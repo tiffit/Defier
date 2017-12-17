@@ -1,6 +1,7 @@
 {
   "result": {
-    "item": "defier:energystar"
+    "item": "defier:energystar",
+    "data": 0
   },
   "pattern": [
     "sms",

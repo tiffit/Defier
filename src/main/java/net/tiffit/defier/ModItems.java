@@ -6,6 +6,7 @@ import net.tiffit.defier.block.DefierBlock;
 import net.tiffit.defier.block.EnergyProviderBlock;
 import net.tiffit.defier.block.PatternMolderBlock;
 import net.tiffit.defier.item.DefierItem;
+import net.tiffit.defier.item.EnergyStarItem;
 import net.tiffit.defier.item.PatternItem;
 
 public class ModItems {
@@ -35,7 +36,7 @@ public class ModItems {
 	public static DefierItem defierstar;
 	
 	@GameRegistry.ObjectHolder(Defier.MODID + ":energystar")
-	public static DefierItem energystar;
+	public static EnergyStarItem energystar;
 	
 	@GameRegistry.ObjectHolder(Defier.MODID + ":strongstar")
 	public static DefierItem strongstar;

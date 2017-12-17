@@ -22,7 +22,8 @@ public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyRec
 	private int max_delay = 100;
 	private int delay = max_delay;
 	
-	private int upgrades = 0;
+	private int speed_upgrades = 0;
+	private int storage_upgrades = 0;
 	
 	public int laser_timer = 0;
 	public BlockPos laser_target = null;
@@ -33,8 +34,8 @@ public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyRec
 	@Override
 	public void update() {
 		if(!world.isRemote){
-			if(upgrades > 0){
-				calcDelay();
+			if(speed_upgrades > 0 || storage_upgrades > 0){
+				calcUpgrades();
 				if(delay > max_delay)delay = max_delay;
 			}
 			DefierTileEntity te = findDefier();
@@ -70,29 +71,41 @@ public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyRec
 		}
 	}
 	
-	public int getUpgrades(){
-		return upgrades;
+	public int getSpeedUpgrades(){
+		return speed_upgrades;
 	}
 	
-	public void addUpgrade(){
-		if(this.upgrades < 8)this.upgrades++;
+	public int getStorageUpgrades(){
+		return storage_upgrades;
 	}
 	
-	public void calcDelay(){
-		max_delay = 100 - upgrades*10;
+	public void addSpeedUpgrade(){
+		if(this.speed_upgrades < 8)this.speed_upgrades++;
+	}
+	
+	public void addStorageUpgrade(){
+		if(this.storage_upgrades < 4)this.storage_upgrades++;
+	}
+	
+	public void calcUpgrades(){
+		max_delay = 100 - speed_upgrades*10;
+		rf.setCapacity((long)(ConfigData.ENERGYPROVIDER_MAX_STORAGE*(Math.pow(ConfigData.ENERGYPROVIDER_STORAGE_BASE, storage_upgrades))));
 	}
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound.setInteger("upgrades", upgrades);
+		compound.setInteger("upgrades", speed_upgrades);
+		compound.setInteger("storage_upgrades", storage_upgrades);
 		compound.setInteger("delay", delay);
 		return super.writeToNBT(compound);
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		upgrades = compound.getInteger("upgrades");
+		speed_upgrades = compound.getInteger("upgrades");
+		storage_upgrades = compound.getInteger("storage_upgrades");
 		delay = compound.getInteger("delay");
+		calcUpgrades();
 		super.readFromNBT(compound);
 	}
 	

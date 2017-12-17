@@ -68,7 +68,7 @@ public class CompressorTileEntity extends RFTileEntity implements IEnergyReceive
 			int rfNeeded = (int)((getItemsIn()/(double)ConfigData.COMPRESSOR_ITEM_AMOUNT)*ConfigData.COMPRESSOR_RF_USAGE);
 			if(rf.getEnergyStored() <= rfNeeded){
 				world.destroyBlock(getPos(), false);
-				if(ConfigData.COMPRESSOR_EXPLODE)world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (int)((100_000*(rfNeeded/(double)ConfigData.COMPRESSOR_RF_USAGE))/10_000), true);
+				if(ConfigData.COMPRESSOR_EXPLODE)world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), ((100_000*(rfNeeded/(float)ConfigData.COMPRESSOR_RF_USAGE))/10_000)*ConfigData.COMPRESSOR_EXPLOSION_MULT, true);
 			}else{
 				rf.setEnergyStored(rf.getEnergyStored() - rfNeeded);
 			}

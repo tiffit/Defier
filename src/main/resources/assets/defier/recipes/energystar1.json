@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "defier:energystar",
+    "data": 1
+  },
+  "pattern": [
+    "ses",
+    "sds",
+    "ses"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "s": {
+      "item": "defier:energystar",
+      "data": 0
+    },
+    "e": {
+      "item": "defier:energyprovider"
+    },
+    "d": {
+      "item": "minecraft:diamond_block"
+    }
+  }
+}

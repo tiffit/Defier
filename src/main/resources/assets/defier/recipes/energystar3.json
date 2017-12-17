@@ -1,0 +1,27 @@
+{
+  "result": {
+    "item": "defier:energystar",
+    "data": 3
+  },
+  "pattern": [
+    "dsg",
+    "sts",
+    "gsd"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "s": {
+      "item": "defier:energystar",
+      "data": 2
+    },
+    "t": {
+      "item": "minecraft:totem_of_undying"
+    },
+    "d": {
+      "item": "minecraft:diamond_block"
+    },
+    "g": {
+      "item": "minecraft:gold_block"
+    }
+  }
+}

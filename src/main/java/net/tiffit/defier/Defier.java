@@ -21,7 +21,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -44,7 +43,7 @@ public class Defier
 {
     public static final String MODID = "defier";
     public static final String NAME = "Defier";
-    public static final String VERSION = "1.1.0";
+    public static final String VERSION = "1.2.0";
     
     public static CreativeTabs CTAB = new CreativeTabs("defier") {
 		

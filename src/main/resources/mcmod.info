@@ -11,6 +11,6 @@
   "credits": "Tiffit",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": ["CodeChickenLib"]
+  "dependencies": ["codechickenlib", "redstoneflux"]
 }
 ]
