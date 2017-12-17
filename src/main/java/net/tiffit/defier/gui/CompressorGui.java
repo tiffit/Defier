@@ -50,7 +50,7 @@ public class CompressorGui extends GuiContainer {
         mc.getTextureManager().bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
         {
-	    	double scale = 1 - (te.getProgress()/(double)te.maxProgress);
+	    	double scale = 1 - (te.getProgress()/(double)te.max_progress);
 	    	int bar = (int) (scale*160);
 	    	if(bar > 0)drawTexturedModalRect(guiLeft + 8, guiTop + 76, 0, 166, bar, 2);
         }

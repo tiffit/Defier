@@ -11,6 +11,7 @@ public abstract class GenericContainer extends Container {
 
 	@Override
 	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
 		for (int i = 0; i < this.listeners.size(); ++i) {
 			IContainerListener icontainerlistener = this.listeners.get(i);
 			EntityPlayerMP mp = (EntityPlayerMP) icontainerlistener;

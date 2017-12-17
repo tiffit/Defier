@@ -11,6 +11,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.tiffit.defier.ConfigData;
 import net.tiffit.defier.client.network.NetworkManager;
 import net.tiffit.defier.client.network.PacketEnergyProviderSend;
 import net.tiffit.defier.client.network.PacketUpdateRF;
@@ -26,7 +27,7 @@ public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyRec
 	public int laser_timer = 0;
 	public BlockPos laser_target = null;
 	public EnergyProviderTileEntity() {
-		rf = new LargeEnergyStorage(1_000_000, 1_000_000, 0);
+		rf = new LargeEnergyStorage(ConfigData.ENERGYPROVIDER_MAX_STORAGE, ConfigData.ENERGYPROVIDER_MAX_STORAGE, 0);
 	}
     
 	@Override

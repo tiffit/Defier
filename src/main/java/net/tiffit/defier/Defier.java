@@ -21,6 +21,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -42,7 +44,7 @@ public class Defier
 {
     public static final String MODID = "defier";
     public static final String NAME = "Defier";
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.1.0";
     
     public static CreativeTabs CTAB = new CreativeTabs("defier") {
 		
@@ -64,10 +66,14 @@ public class Defier
     @Instance(MODID)
     public static Defier INSTANCE;
     
+    private Configuration config;
+    
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
     	configFolder = new File(event.getSuggestedConfigurationFile().getParentFile(), "defier");
     	if(!configFolder.exists())configFolder.mkdir();
+    	config = new Configuration(new File(configFolder, "defier.cfg"), "1.0.0", true);
+    	ConfigData.load(config);
         logger = event.getModLog();
         NetworkManager.registerMessages();
         proxy.preInit(event);
@@ -77,7 +83,6 @@ public class Defier
     public void init(FMLInitializationEvent e) {
     	NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
         proxy.init(e);
-        
         MinecraftForge.EVENT_BUS.post(new DefierRecipeRegistryEvent());
     }
     

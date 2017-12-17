@@ -8,6 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import net.tiffit.defier.ConfigData;
+import net.tiffit.defier.ModItems;
 import net.tiffit.defier.tileentity.CompressorTileEntity;
 
 public class CompressorContainer extends GenericContainer {
@@ -20,11 +22,32 @@ public class CompressorContainer extends GenericContainer {
 		this.te = te;
 
 		IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		addSlotToContainer(new SlotItemHandler(itemHandler, 0, 80, 34));
+		addSlotToContainer(new SlotItemHandler(itemHandler, 0, 80, 34){
+			@Override
+			public void onSlotChanged() {
+				if(getHasStack())acceptNewItems();
+			}
+		});
 
 		addPlayerSlots(playerInventory);
 	}
 
+	
+    public void acceptNewItems(){
+    	if(te.finished)return;
+    	ItemStack is = getSlot(0).getStack();
+    	if(is != null && te.progress > 0){
+    		if(!te.getWorld().isRemote){
+    			int itemSize = 1;
+    			if(is.getItem() == ModItems.largemass)itemSize = ConfigData.MASSIVESTAR_SIZE;
+    			te.progress-= is.getCount()*itemSize;
+    		}
+    		getSlot(0).decrStackSize(is.getCount());
+    		if(!te.getWorld().isRemote)te.markDirty();
+    	}
+    	if(!te.getWorld().isRemote && te.progress <= 0)te.finishCompression();
+    }
+	
 	private void addPlayerSlots(IInventory playerInventory) {
 		for (int row = 0; row < 3; ++row) {
 			for (int col = 0; col < 9; ++col) {
@@ -64,13 +87,17 @@ public class CompressorContainer extends GenericContainer {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setInteger("progress", te.getProgress());
 		tag.setInteger("rfusage", te.rfUsage);
+		tag.setInteger("maxprogress", te.max_progress);
+		tag.setLong("rf", te.rf.getEnergyStored());
 		return tag;
 	}
 	
 	@Override
 	public void readNBT(NBTTagCompound tag) {
 		te.setProgress(tag.getInteger("progress"));
-		te.rfUsage = tag.getInteger("rfUsage");
+		te.rfUsage = tag.getInteger("rfusage");
+		te.max_progress = tag.getInteger("maxprogress");
+		te.rf.setEnergyStored(tag.getLong("rf"));
 	}
 
 	@Override

@@ -10,25 +10,27 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.tiffit.defier.ConfigData;
 import net.tiffit.defier.ModItems;
 import net.tiffit.defier.util.LargeEnergyStorage;
 
 public class CompressorTileEntity extends RFTileEntity implements IEnergyReceiver, ITickable{
-
-	public static int maxProgress = 2_000_000_000;
 	
-	private int progress = maxProgress;
+	//For client-side syncing
+	public int max_progress = ConfigData.COMPRESSOR_ITEM_AMOUNT;
+	public int progress = ConfigData.COMPRESSOR_ITEM_AMOUNT;
 	public int rfUsage;
-	private boolean finished = false;
+	public boolean finished = false;
 	
 	public CompressorTileEntity(){
 		rf = new LargeEnergyStorage(3_000_000, 150_000, 0);
 	}
 	
-    private ItemStackHandler itemStackHandler = new ItemStackHandler(1) {
+    private ItemStackHandler itemStackHandler = new ItemStackHandler(1){
         @Override
         protected void onContentsChanged(int slot) {
-        	CompressorTileEntity.this.markDirty();
+        	CompressorTileEntity te = CompressorTileEntity.this;
+        	te.markDirty();
         }
     };
 
@@ -46,19 +48,7 @@ public class CompressorTileEntity extends RFTileEntity implements IEnergyReceive
     	this.progress = progress;
     }
 
-    public void acceptNewItems(){
-    	if(world.isRemote || finished)return;
-    	ItemStack is = itemStackHandler.getStackInSlot(0);
-    	if(is != null && progress > 0){
-    		int itemSize = 1;
-    		if(is.getItem() == ModItems.largemass)itemSize = 1_000_000;
-    		progress-= is.getCount()*itemSize;
-    		itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
-    	}
-    	if(progress <= 0)finishCompression();
-    }
-    
-    private void finishCompression(){
+    public void finishCompression(){
     	if(world.isRemote || finished)return;
     	world.destroyBlock(getPos(), false);
     	EntityItem item = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.defiercore, 1));
@@ -68,23 +58,17 @@ public class CompressorTileEntity extends RFTileEntity implements IEnergyReceive
     }
     
     private int getItemsIn(){
-    	return maxProgress - progress;
-    }
-    
-    @Override
-    public void markDirty() {
-    	acceptNewItems();
-    	super.markDirty();
+    	return ConfigData.COMPRESSOR_ITEM_AMOUNT - progress;
     }
     
 	@Override
 	public void update() {
 		if(world.isRemote)return;
 		if(getItemsIn() > 64*5){
-			int rfNeeded = (int)((getItemsIn()/(double)maxProgress)*100_000);
+			int rfNeeded = (int)((getItemsIn()/(double)ConfigData.COMPRESSOR_ITEM_AMOUNT)*ConfigData.COMPRESSOR_RF_USAGE);
 			if(rf.getEnergyStored() <= rfNeeded){
 				world.destroyBlock(getPos(), false);
-				world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), rfNeeded/10_000, true);
+				if(ConfigData.COMPRESSOR_EXPLODE)world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), (int)((100_000*(rfNeeded/(double)ConfigData.COMPRESSOR_RF_USAGE))/10_000), true);
 			}else{
 				rf.setEnergyStored(rf.getEnergyStored() - rfNeeded);
 			}
