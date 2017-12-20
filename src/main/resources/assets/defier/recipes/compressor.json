@@ -13,7 +13,8 @@
       "item": "minecraft:sticky_piston"
     },
     "s": {
-      "item": "defier:energystar"
+      "item": "defier:energystar",
+      "data": 0
     },
     "d": {
       "item": "defier:strongstar"

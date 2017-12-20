@@ -13,7 +13,8 @@
       "item": "defier:defiercore"
     },
     "e": {
-      "item": "defier:energystar"
+      "item": "defier:energystar",
+      "data": 0
     }
     ,
     "s": {

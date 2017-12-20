@@ -13,7 +13,8 @@
       "item": "minecraft:sugar"
     },
     "s": {
-      "item": "defier:energystar"
+      "item": "defier:energystar",
+      "data": 0
     }
   }
 }

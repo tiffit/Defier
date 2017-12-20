@@ -10,7 +10,8 @@
   "type": "forge:ore_shaped",
   "key": {
     "e": {
-      "item": "defier:energystar"
+      "item": "defier:energystar",
+      "data": 0
     },
     "s": {
       "item": "defier:strongstar"
