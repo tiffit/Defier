@@ -22,31 +22,10 @@ public class CompressorContainer extends GenericContainer {
 		this.te = te;
 
 		IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		addSlotToContainer(new SlotItemHandler(itemHandler, 0, 80, 34){
-			@Override
-			public void onSlotChanged() {
-				if(getHasStack())acceptNewItems();
-			}
-		});
+		addSlotToContainer(new SlotItemHandler(itemHandler, 0, 80, 34));
 
 		addPlayerSlots(playerInventory);
 	}
-
-	
-    public void acceptNewItems(){
-    	if(te.finished)return;
-    	ItemStack is = getSlot(0).getStack();
-    	if(is != null && te.progress > 0){
-    		if(!te.getWorld().isRemote){
-    			int itemSize = 1;
-    			if(is.getItem() == ModItems.largemass)itemSize = ConfigData.MASSIVESTAR_SIZE;
-    			te.progress-= is.getCount()*itemSize;
-    		}
-    		getSlot(0).decrStackSize(is.getCount());
-    		if(!te.getWorld().isRemote)te.markDirty();
-    	}
-    	if(!te.getWorld().isRemote && te.progress <= 0)te.finishCompression();
-    }
 	
 	private void addPlayerSlots(IInventory playerInventory) {
 		for (int row = 0; row < 3; ++row) {

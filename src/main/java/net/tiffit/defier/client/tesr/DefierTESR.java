@@ -33,7 +33,9 @@ public class DefierTESR extends TileEntitySpecialRenderer<DefierTileEntity> {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(rL);
 		GL11.glCallList(ClientProxy.defierSphereIdOutside);
 		GL11.glCallList(ClientProxy.defierSphereIdInside);
+		GL11.glColor4d(1, 1, 1, 1);
 		GL11.glPopMatrix();
+		
 	}
 
 }

@@ -30,9 +30,25 @@ public class CompressorTileEntity extends RFTileEntity implements IEnergyReceive
         @Override
         protected void onContentsChanged(int slot) {
         	CompressorTileEntity te = CompressorTileEntity.this;
+        	acceptNewItems();
         	te.markDirty();
         }
     };
+    
+    public void acceptNewItems(){
+    	if(finished)return;
+    	ItemStack is = itemStackHandler.getStackInSlot(0);
+    	if(is != null && progress > 0){
+    		if(!getWorld().isRemote){
+    			int itemSize = 1;
+    			if(is.getItem() == ModItems.largemass)itemSize = ConfigData.MASSIVESTAR_SIZE;
+    			progress-= is.getCount()*itemSize;
+    		}
+    		itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
+    		if(!getWorld().isRemote)markDirty();
+    	}
+    	if(!getWorld().isRemote && progress <= 0)finishCompression();
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
