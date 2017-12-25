@@ -1,0 +1,22 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:pattern"
+        },
+        "title": "Pattern Time",
+        "description": "Craft a Pattern"
+    },
+    "parent": "defier:defierstar",
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "defier:pattern"
+                    }
+                ]
+            }
+        }
+    }
+}

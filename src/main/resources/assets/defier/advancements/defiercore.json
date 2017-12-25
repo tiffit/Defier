@@ -1,0 +1,22 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:defiercore"
+        },
+        "title": "Almost There",
+        "description": "Get a Defier Core"
+    },
+    "parent": "defier:compressor",
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "defier:defiercore"
+                    }
+                ]
+            }
+        }
+    }
+}

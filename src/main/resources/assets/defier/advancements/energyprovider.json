@@ -1,0 +1,22 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:energyprovider"
+        },
+        "title": "Providing Energy",
+        "description": "Craft an Energy Provider"
+    },
+    "parent": "defier:defierstar",
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "defier:energyprovider"
+                    }
+                ]
+            }
+        }
+    }
+}

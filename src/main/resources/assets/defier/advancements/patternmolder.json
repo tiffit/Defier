@@ -1,0 +1,22 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:patternmolder"
+        },
+        "title": "Pattern Molding",
+        "description": "Craft a Pattern Molder"
+    },
+    "parent": "defier:pattern",
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "defier:patternmolder"
+                    }
+                ]
+            }
+        }
+    }
+}

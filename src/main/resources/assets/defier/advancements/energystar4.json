@@ -1,0 +1,25 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:energystar",
+            "data": 3
+        },
+        "title": "3456 Nether Stars",
+        "description": "Craft a Powerful Energy Star",
+        "frame": "challenge"
+    },
+    "parent": "defier:energystar3",
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "defier:energystar",
+                        "data": 3
+                    }
+                ]
+            }
+        }
+    }
+}

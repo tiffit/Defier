@@ -1,0 +1,25 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:energystar",
+            "data": 2
+        },
+        "title": "864 Nether Stars",
+        "description": "Craft an Advanced Energy Star",
+        "frame": "challenge"
+    },
+    "parent": "defier:energystar2",
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "defier:energystar",
+                        "data": 2
+                    }
+                ]
+            }
+        }
+    }
+}

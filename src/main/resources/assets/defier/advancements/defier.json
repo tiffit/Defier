@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:defier"
+        },
+        "title": "Time to Defy",
+        "description": "Craft a Defier",
+        "frame": "challenge"
+    },
+    "parent": "defier:defiercore",
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "defier:defier"
+                    }
+                ]
+            }
+        }
+    }
+}

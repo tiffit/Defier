@@ -1,0 +1,22 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:largemass"
+        },
+        "title": "Quicker Compression",
+        "description": "Craft a Massive Star"
+    },
+    "parent": "defier:compressor",
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "defier:largemass"
+                    }
+                ]
+            }
+        }
+    }
+}

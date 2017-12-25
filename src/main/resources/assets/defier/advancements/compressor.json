@@ -1,0 +1,22 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:compressor"
+        },
+        "title": "Time to Get Lots of Items",
+        "description": "Craft a Compressor"
+    },
+    "parent": "defier:defierstar",
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "defier:compressor"
+                    }
+                ]
+            }
+        }
+    }
+}

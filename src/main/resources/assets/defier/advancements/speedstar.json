@@ -1,0 +1,22 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:speedstar"
+        },
+        "title": "Quicker Providing",
+        "description": "Craft a Speed Star"
+    },
+    "parent": "defier:energyprovider",
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "defier:speedstar"
+                    }
+                ]
+            }
+        }
+    }
+}

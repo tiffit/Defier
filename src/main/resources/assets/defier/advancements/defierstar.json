@@ -1,0 +1,22 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:defierstar"
+        },
+        "title": "Time to Get Lots of Nether Stars",
+        "description": "Craft a Defier Star"
+    },
+    "parent": "defier:root",
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "defier:defierstar"
+                    }
+                ]
+            }
+        }
+    }
+}

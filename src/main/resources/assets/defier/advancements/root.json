@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:defier"
+        },
+        "title": "Defier",
+        "description": "Create Items from RF",
+        "background": "minecraft:textures/blocks/soul_sand.png",
+        "show_toast": false,
+        "announce_to_chat": false
+    },
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:nether_star"
+                    }
+                ]
+            }
+        }
+    }
+}

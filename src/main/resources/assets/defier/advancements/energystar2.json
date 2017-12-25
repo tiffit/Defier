@@ -1,0 +1,24 @@
+{
+    "display": {
+        "icon": {
+            "item": "defier:energystar",
+            "data": 1
+        },
+        "title": "216 Nether Stars",
+        "description": "Craft a Great Energy Star"
+    },
+    "parent": "defier:energystar",
+    "criteria": {
+        "have": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "defier:energystar",
+                        "data": 1
+                    }
+                ]
+            }
+        }
+    }
+}
