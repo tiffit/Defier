@@ -57,5 +57,15 @@ public class DefierGui extends GuiContainer {
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         mc.getTextureManager().bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+    	Slot patternSlot = container.getSlot(0);
+    	if(patternSlot.getHasStack()){
+    		ItemStack stored = new ItemStack(patternSlot.getStack().getTagCompound().getCompoundTag("defieritem"));
+    		stored.clearCustomName();
+    		DefierRecipe recipe = DefierRecipeRegistry.findRecipeForStack(stored);
+    		double percent = te.rf.getEnergyStored()/(double)recipe.getCost();
+    		int scaled = (int) (percent*74);
+            drawTexturedModalRect(guiLeft + 47, guiTop + 23, 176, 0, scaled, 17);
+
+    	}
     }
 }

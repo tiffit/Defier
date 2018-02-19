@@ -9,7 +9,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.tiffit.defier.ConfigData;
-import net.tiffit.defier.ModItems;
 import net.tiffit.defier.tileentity.CompressorTileEntity;
 
 public class CompressorContainer extends GenericContainer {
@@ -22,7 +21,12 @@ public class CompressorContainer extends GenericContainer {
 		this.te = te;
 
 		IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		addSlotToContainer(new SlotItemHandler(itemHandler, 0, 80, 34));
+		addSlotToContainer(new SlotItemHandler(itemHandler, 0, 80, 34){
+			@Override
+			public boolean isItemValid(ItemStack stack) {
+				return !ConfigData.isCompressorBlacklisted(stack);
+			}
+		});
 
 		addPlayerSlots(playerInventory);
 	}

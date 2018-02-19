@@ -6,17 +6,30 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.tiffit.defier.DefierRecipeRegistry;
 import net.tiffit.defier.ModItems;
+import net.tiffit.defier.util.DefierItemStackHandler;
 
 public class PatternMolderTileEntity extends TileEntity{
 	
-    private ItemStackHandler itemStackHandler = new ItemStackHandler(3) {
+    private DefierItemStackHandler itemStackHandler = new DefierItemStackHandler(3) {
         @Override
         protected void onContentsChanged(int slot) {
         	PatternMolderTileEntity te = PatternMolderTileEntity.this;
         	te.markDirty();
+        }
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+        	if(slot == 0)if(stack.getItem() != ModItems.pattern)return stack;
+        	if(slot == 1)if(DefierRecipeRegistry.findRecipeForStack(stack) == null)return stack;
+        	if(slot == 2)return stack;
+        	return super.insertItem(slot, stack, simulate);
+        }
+        @Override
+        public int getSlotLimit(int slot) {
+        	if(slot == 0)return 1;
+        	if(slot == 2)return 1;
+        	return super.getSlotLimit(slot);
         }
     };
 

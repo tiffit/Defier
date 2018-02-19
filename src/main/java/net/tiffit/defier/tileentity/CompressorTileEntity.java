@@ -33,11 +33,17 @@ public class CompressorTileEntity extends RFTileEntity implements IEnergyReceive
         	acceptNewItems();
         	te.markDirty();
         }
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+        	if(ConfigData.isCompressorBlacklisted(stack))return stack;
+        	return super.insertItem(slot, stack, simulate);
+        }
     };
     
     public void acceptNewItems(){
     	if(finished)return;
     	ItemStack is = itemStackHandler.getStackInSlot(0);
+    	if(ConfigData.isCompressorBlacklisted(is))return;
     	if(is != null && progress > 0){
     		if(!getWorld().isRemote){
     			int itemSize = 1;

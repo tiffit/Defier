@@ -7,9 +7,10 @@ import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.tiffit.defier.DefierRecipe;
 import net.tiffit.defier.DefierRecipeRegistry;
+import net.tiffit.defier.ModItems;
+import net.tiffit.defier.util.DefierItemStackHandler;
 import net.tiffit.defier.util.LargeEnergyStorage;
 
 public class DefierTileEntity extends RFTileEntity implements ITickable{
@@ -17,11 +18,18 @@ public class DefierTileEntity extends RFTileEntity implements ITickable{
 	public int render_pulsate = 0;
 	public boolean render_pulsate_increase = true;
 	
-    private ItemStackHandler itemStackHandler = new ItemStackHandler(2) {
+    private DefierItemStackHandler itemStackHandler = new DefierItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
         	DefierTileEntity.this.markDirty();
         }
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+        	if(slot == 0)if(stack.getItem() != ModItems.pattern || !stack.hasTagCompound() || !stack.getTagCompound().hasKey("defieritem"))return stack;
+        	if(slot == 1)return stack;
+        	return super.insertItem(slot, stack, simulate);
+        }
+        
     };
 
     public DefierTileEntity() {
@@ -30,15 +38,21 @@ public class DefierTileEntity extends RFTileEntity implements ITickable{
     
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
         itemStackHandler.deserializeNBT(compound.getCompoundTag("inventory"));
+        if(itemStackHandler.getStackInSlot(0).hasTagCompound() && itemStackHandler.getStackInSlot(0).getTagCompound().hasKey("defieritem")){
+			DefierRecipe recipe = DefierRecipeRegistry.findRecipeForStack(new ItemStack(itemStackHandler.getStackInSlot(0).getTagCompound().getCompoundTag("defieritem")));
+			if(recipe != null && itemStackHandler.localInsertItem(1, recipe.outputItem(), true) == ItemStack.EMPTY){
+				rf.setCapacity(recipe.getCost());
+			}
+        }
+        super.readFromNBT(compound);
     }
     
 	@Override
 	public void update() {
 		if(itemStackHandler.getStackInSlot(0).hasTagCompound() && itemStackHandler.getStackInSlot(0).getTagCompound().hasKey("defieritem")){
 			DefierRecipe recipe = DefierRecipeRegistry.findRecipeForStack(new ItemStack(itemStackHandler.getStackInSlot(0).getTagCompound().getCompoundTag("defieritem")));
-			if(recipe != null && itemStackHandler.insertItem(1, recipe.outputItem(), true) == ItemStack.EMPTY){
+			if(recipe != null && itemStackHandler.localInsertItem(1, recipe.outputItem(), true) == ItemStack.EMPTY){
 				rf.setCapacity(recipe.getCost());
 				if(rf.getEnergyStored() == recipe.getCost()){
 					rf.setEnergyStored(rf.getEnergyStored() - recipe.getCost());
@@ -46,7 +60,7 @@ public class DefierTileEntity extends RFTileEntity implements ITickable{
 					if(output.isEmpty()){
 						itemStackHandler.setStackInSlot(1, recipe.outputItem());
 					}else{
-						itemStackHandler.insertItem(1, recipe.outputItem(), false);
+						itemStackHandler.localInsertItem(1, recipe.outputItem(), false);
 					}
 				}
 			}else rf.setCapacity(0);

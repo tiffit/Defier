@@ -14,14 +14,12 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
@@ -45,7 +43,7 @@ public class Defier
 {
     public static final String MODID = "defier";
     public static final String NAME = "Defier";
-    public static final String VERSION = "1.2.3";
+    public static final String VERSION = "1.2.4";
     
     public static CreativeTabs CTAB = new CreativeTabs("defier") {
 		
@@ -71,10 +69,10 @@ public class Defier
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-    		configFolder = new File(event.getSuggestedConfigurationFile().getParentFile(), "defier");
-    		if(!configFolder.exists())configFolder.mkdir();
-    		config = new Configuration(new File(configFolder, "defier.cfg"), "1.0.0", true);
-    		ConfigData.load(config);
+    	configFolder = new File(event.getSuggestedConfigurationFile().getParentFile(), "defier");
+    	if(!configFolder.exists())configFolder.mkdir();
+    	config = new Configuration(new File(configFolder, "defier.cfg"), "1.0.0", true);
+    	ConfigData.load(config);
         logger = event.getModLog();
         NetworkManager.registerMessages();
         proxy.preInit(event);
@@ -82,7 +80,7 @@ public class Defier
 
     @EventHandler
     public void init(FMLInitializationEvent e) {
-    		NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
+    	NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
         proxy.init(e);
         MinecraftForge.EVENT_BUS.post(new DefierRecipeRegistryEvent());
     }
