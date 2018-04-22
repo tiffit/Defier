@@ -70,6 +70,10 @@ public class ClientProxy extends CommonProxy {
     	registerItem(ModItems.energystar, 3);
     	registerItem(ModItems.strongstar);
     	registerItem(ModItems.speedstar);
+    	registerItem(ModItems.batteryregular);
+    	registerItem(ModItems.batterygood);
+    	registerItem(ModItems.batterygreat);
+    	registerItem(ModItems.batteryamazing);
     	registerItem(Item.getItemFromBlock(ModItems.compressor));
     	registerItem(Item.getItemFromBlock(ModItems.patternmolder));
     	
@@ -82,7 +86,7 @@ public class ClientProxy extends CommonProxy {
     }
     
     private static void registerItem(Item item, int meta){
-    	ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName() + (meta == 0 ? "" : meta + ""), "inventory"));
+    	ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName().toString().replaceAll("\\.", "_") + (meta == 0 ? "" : meta + ""), "inventory"));
     }
     
 }

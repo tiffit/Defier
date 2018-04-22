@@ -10,7 +10,9 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.tiffit.defier.Defier;
+import net.tiffit.defier.client.render.lightning.LightningRender;
 import net.tiffit.defier.proxy.ClientProxy;
 import net.tiffit.defier.tileentity.EnergyProviderTileEntity;
 
@@ -18,6 +20,8 @@ public class EnergyProviderTESR extends TileEntitySpecialRenderer<EnergyProvider
 
 	private static ResourceLocation iron_block = new ResourceLocation("textures/blocks/iron_block.png");
 	private static ResourceLocation obsidian = new ResourceLocation("textures/blocks/obsidian.png");
+
+	private static LightningRender lightning;
 
 	@Override
 	public void render(EnergyProviderTileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
@@ -63,7 +67,7 @@ public class EnergyProviderTESR extends TileEntitySpecialRenderer<EnergyProvider
 
 		Tessellator.getInstance().draw();
 		GL11.glPopMatrix();
-		
+
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 		bindTexture(obsidian);
@@ -94,24 +98,16 @@ public class EnergyProviderTESR extends TileEntitySpecialRenderer<EnergyProvider
 		GL11.glPopMatrix();
 
 		if (te.laser_timer > 0) {
-			GL11.glPushMatrix();
-			GL11.glDisable(GL11.GL_LIGHTING);
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			GL11.glLineWidth(6);
-			GL11.glTranslated(x, y, z);
-			GL11.glColor4f(1, 0, 0, 1);
-			GL11.glBegin(GL11.GL_LINES);
-			
 			BlockPos newPos = te.laser_target.subtract(te.getPos());
-			
-			GL11.glVertex3d(0.5, 0.9, 0.5);
-			GL11.glVertex3d(newPos.getX() + 0.5, newPos.getY() + .5, newPos.getZ() + 0.5);
-			GL11.glEnd();
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			GL11.glPopMatrix();
+			lightning = new LightningRender(new Vec3d(x + .5, y + .9, z + .5), new Vec3d(newPos.getX(), newPos.getY() - .4, newPos.getZ()));
+			lightning.color = 0xaa0000;
+			lightning.bendsMin = 5;
+			lightning.bendsMax = 6;
+			lightning.maxDeviation = .5;
+			lightning.calculate();
+			lightning.render();
 		}
-		
+
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5, y + pixel * 14, z + 0.5);
 		GL11.glScalef(0.25f, 0.25f, 0.25f);

@@ -17,6 +17,7 @@ import net.tiffit.defier.block.CompressorBlock;
 import net.tiffit.defier.block.DefierBlock;
 import net.tiffit.defier.block.EnergyProviderBlock;
 import net.tiffit.defier.block.PatternMolderBlock;
+import net.tiffit.defier.item.BatteryItem;
 import net.tiffit.defier.item.DefierItem;
 import net.tiffit.defier.item.EnergyStarItem;
 import net.tiffit.defier.item.PatternItem;
@@ -66,6 +67,10 @@ public class CommonProxy {
     	reg.register(new DefierItem("strongstar"));
     	reg.register(new DefierItem("speedstar"));
     	reg.register(new PatternItem());
+    	reg.register(new BatteryItem("regular", 10_000));
+    	reg.register(new BatteryItem("good", 100_000));
+    	reg.register(new BatteryItem("great", 1_000_000));
+    	reg.register(new BatteryItem("amazing", 1_000_000_000));
     }
     
     private static void registerItemBlock(IForgeRegistry<Item> reg, Block block){

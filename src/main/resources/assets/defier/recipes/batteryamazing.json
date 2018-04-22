@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "defier:battery.amazing"
+  },
+  "pattern": [
+    " s ",
+    "mbm",
+    "mmm"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "s": {
+        "item": "defier:energystar",
+        "data": 3
+    },
+    "m": {
+      "item": "defier:strongstar"
+    },
+    "b": {
+      "item": "defier:battery.great"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "defier:battery.great"
+  },
+  "pattern": [
+    " s ",
+    "mbm",
+    "mmm"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "s": {
+        "item": "defier:energystar",
+        "data": 2
+    },
+    "m": {
+      "item": "minecraft:diamond_block"
+    },
+    "b": {
+      "item": "defier:battery.good"
+    }
+  }
+}

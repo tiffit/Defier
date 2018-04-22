@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "defier:battery.regular"
+  },
+  "pattern": [
+    " s ",
+    "mbm",
+    "mmm"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "s": {
+      "item": "minecraft:redstone_block"
+    },
+    "m": {
+      "item": "minecraft:iron_block"
+    },
+    "b": {
+        "item": "defier:energystar",
+        "data": 0
+    }
+  }
+}

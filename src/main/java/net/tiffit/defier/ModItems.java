@@ -5,6 +5,7 @@ import net.tiffit.defier.block.CompressorBlock;
 import net.tiffit.defier.block.DefierBlock;
 import net.tiffit.defier.block.EnergyProviderBlock;
 import net.tiffit.defier.block.PatternMolderBlock;
+import net.tiffit.defier.item.BatteryItem;
 import net.tiffit.defier.item.DefierItem;
 import net.tiffit.defier.item.EnergyStarItem;
 import net.tiffit.defier.item.PatternItem;
@@ -43,5 +44,17 @@ public class ModItems {
 	
 	@GameRegistry.ObjectHolder(Defier.MODID + ":speedstar")
 	public static DefierItem speedstar;
+	
+	@GameRegistry.ObjectHolder(Defier.MODID + ":battery.regular")
+	public static BatteryItem batteryregular;
+	
+	@GameRegistry.ObjectHolder(Defier.MODID + ":battery.good")
+	public static BatteryItem batterygood;
+	
+	@GameRegistry.ObjectHolder(Defier.MODID + ":battery.great")
+	public static BatteryItem batterygreat;
+	
+	@GameRegistry.ObjectHolder(Defier.MODID + ":battery.amazing")
+	public static BatteryItem batteryamazing;
 	
 }

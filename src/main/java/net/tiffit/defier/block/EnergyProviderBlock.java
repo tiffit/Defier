@@ -1,10 +1,14 @@
 package net.tiffit.defier.block;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCactus;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -13,6 +17,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
@@ -22,6 +27,10 @@ import net.tiffit.defier.tileentity.EnergyProviderTileEntity;
 
 public class EnergyProviderBlock extends Block implements ITileEntityProvider {
 
+	
+	protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 2/16D, 1D);
+	protected static final AxisAlignedBB POLE_AABB = new AxisAlignedBB(7/16D, 0/16D, 7/16D, 9/16D, 12/16D, 9/16D);
+	
 	public EnergyProviderBlock() {
 		super(Material.IRON);
 		setUnlocalizedName(Defier.MODID + ".energyprovider");
@@ -31,6 +40,23 @@ public class EnergyProviderBlock extends Block implements ITileEntityProvider {
 		setSoundType(SoundType.METAL);
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(Defier.CTAB);
+		BlockCactus e;
+	}
+	
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) {
+        AxisAlignedBB basebb = BASE_AABB.offset(pos);
+
+        if (entityBox.intersects(basebb))
+        {
+            collidingBoxes.add(basebb);
+        }
+        AxisAlignedBB polebb = POLE_AABB.offset(pos);
+
+        if (entityBox.intersects(polebb))
+        {
+            collidingBoxes.add(polebb);
+        }
 	}
 
 	@Override

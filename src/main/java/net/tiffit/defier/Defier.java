@@ -43,7 +43,7 @@ public class Defier
 {
     public static final String MODID = "defier";
     public static final String NAME = "Defier";
-    public static final String VERSION = "1.2.4";
+    public static final String VERSION = "1.3.0";
     
     public static CreativeTabs CTAB = new CreativeTabs("defier") {
 		
