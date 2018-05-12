@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "defier:energyprovidermodifier.efficiency"
+  },
+  "pattern": [
+    " r ",
+    "sbs",
+    " r "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "r": {
+      "item": "minecraft:redstone_block"
+    },
+    "b": {
+      "item": "defier:energyprovidermodifierbase"
+    },
+    "s": {
+      "item": "defier:energystar",
+      "data": 2
+    }
+  }
+}

@@ -2,23 +2,26 @@ package net.tiffit.defier.client.tesr;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.statemap.BlockStateMapper;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.tiffit.defier.Defier;
+import net.tiffit.defier.block.EnergyProviderModifierBlock;
 import net.tiffit.defier.client.render.lightning.LightningRender;
 import net.tiffit.defier.proxy.ClientProxy;
 import net.tiffit.defier.tileentity.EnergyProviderTileEntity;
 
 public class EnergyProviderTESR extends TileEntitySpecialRenderer<EnergyProviderTileEntity> {
 
-	private static ResourceLocation iron_block = new ResourceLocation("textures/blocks/iron_block.png");
 	private static ResourceLocation obsidian = new ResourceLocation("textures/blocks/obsidian.png");
 
 	private static LightningRender lightning;
@@ -29,42 +32,50 @@ public class EnergyProviderTESR extends TileEntitySpecialRenderer<EnergyProvider
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 		GlStateManager.disableLighting();
-		bindTexture(iron_block);
+		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		TextureAtlasSprite sprite = null;
+		IBlockState belowBlock = te.getWorld().getBlockState(te.getPos().down());
+		if(belowBlock != null && belowBlock.getBlock() instanceof EnergyProviderModifierBlock){
+			sprite = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(belowBlock).getParticleTexture();
+		}else{
+			sprite = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.IRON_BLOCK.getDefaultState()).getParticleTexture();
+		}
 		GL11.glColor4d(1, 1, 1, 1);
 		BufferBuilder builder = Tessellator.getInstance().getBuffer();
 		builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		float pixel = 1 / 16F;
+		
+		float pixelBelow = (sprite.getMaxU()-sprite.getMinU())/16;
 
-		builder.pos(0, pixel * 2, 0).tex(0, 0).endVertex();
-		builder.pos(0, pixel * 2, 1).tex(0, 1).endVertex();
-		builder.pos(1, pixel * 2, 1).tex(1, 1).endVertex();
-		builder.pos(1, pixel * 2, 0).tex(1, 0).endVertex();
+		builder.pos(0, pixel * 2, 0).tex(sprite.getMinU(), sprite.getMinV()).endVertex();
+		builder.pos(0, pixel * 2, 1).tex(sprite.getMinU(), sprite.getMaxV()).endVertex();
+		builder.pos(1, pixel * 2, 1).tex(sprite.getMaxU(), sprite.getMaxV()).endVertex();
+		builder.pos(1, pixel * 2, 0).tex(sprite.getMaxU(), sprite.getMinV()).endVertex();
 
-		builder.pos(0, 0, 0).tex(0, 0).endVertex();
-		builder.pos(1, 0, 0).tex(1, 0).endVertex();
-		builder.pos(1, 0, 1).tex(1, 1).endVertex();
-		builder.pos(0, 0, 1).tex(0, 1).endVertex();
+		builder.pos(0, 0, 0).tex(sprite.getMinU(), sprite.getMinV()).endVertex();
+		builder.pos(1, 0, 0).tex(sprite.getMaxU(), sprite.getMinV()).endVertex();
+		builder.pos(1, 0, 1).tex(sprite.getMaxU(), sprite.getMaxV()).endVertex();
+		builder.pos(0, 0, 1).tex(sprite.getMinU(), sprite.getMaxV()).endVertex();
 
-		builder.pos(0, 0, 0).tex(0, pixel).endVertex();
-		builder.pos(0, pixel * 2, 0).tex(0, pixel * 3).endVertex();
-		builder.pos(1, pixel * 2, 0).tex(1, pixel * 3).endVertex();
-		builder.pos(1, 0, 0).tex(1, pixel).endVertex();
+		builder.pos(0, 0, 0).tex(sprite.getMinU(), sprite.getMinV() + pixelBelow).endVertex();
+		builder.pos(0, pixel * 2, 0).tex(sprite.getMinU(), sprite.getMinV() + pixelBelow * 3).endVertex();
+		builder.pos(1, pixel * 2, 0).tex(sprite.getMaxU(), sprite.getMinV() + pixelBelow * 3).endVertex();
+		builder.pos(1, 0, 0).tex(sprite.getMaxU(), sprite.getMinV() + pixelBelow).endVertex();
 
-		builder.pos(0, 0, 1).tex(0, pixel).endVertex();
-		builder.pos(1, 0, 1).tex(1, pixel).endVertex();
-		builder.pos(1, pixel * 2, 1).tex(1, pixel * 3).endVertex();
-		builder.pos(0, pixel * 2, 1).tex(0, pixel * 3).endVertex();
+		builder.pos(0, 0, 1).tex(sprite.getMinU(), sprite.getMinV()+pixelBelow).endVertex();
+		builder.pos(1, 0, 1).tex(sprite.getMaxU(), sprite.getMinV()+pixelBelow).endVertex();
+		builder.pos(1, pixel * 2, 1).tex(sprite.getMaxU(), sprite.getMinV()+pixelBelow * 3).endVertex();
+		builder.pos(0, pixel * 2, 1).tex(sprite.getMinU(), sprite.getMinV()+pixelBelow * 3).endVertex();
 
-		builder.pos(0, 0, 0).tex(0, pixel).endVertex();
-		builder.pos(0, 0, 1).tex(1, pixel).endVertex();
-		builder.pos(0, pixel * 2, 1).tex(1, pixel * 3).endVertex();
-		builder.pos(0, pixel * 2, 0).tex(0, pixel * 3).endVertex();
+		builder.pos(0, 0, 0).tex(sprite.getMinU(), sprite.getMinV()+pixelBelow).endVertex();
+		builder.pos(0, 0, 1).tex(sprite.getMaxU(), sprite.getMinV()+pixelBelow).endVertex();
+		builder.pos(0, pixel * 2, 1).tex(sprite.getMaxU(), sprite.getMinV()+pixelBelow * 3).endVertex();
+		builder.pos(0, pixel * 2, 0).tex(sprite.getMinU(), sprite.getMinV()+pixelBelow * 3).endVertex();
 
-		builder.pos(1, 0, 0).tex(0, pixel).endVertex();
-		builder.pos(1, pixel * 2, 0).tex(0, pixel * 3).endVertex();
-		builder.pos(1, pixel * 2, 1).tex(1, pixel * 3).endVertex();
-		builder.pos(1, 0, 1).tex(1, pixel).endVertex();
-
+		builder.pos(1, 0, 0).tex(sprite.getMinU(), sprite.getMinV()+pixelBelow).endVertex();
+		builder.pos(1, pixel * 2, 0).tex(sprite.getMinU(), sprite.getMinV()+pixelBelow * 3).endVertex();
+		builder.pos(1, pixel * 2, 1).tex(sprite.getMaxU(), sprite.getMinV()+pixelBelow * 3).endVertex();
+		builder.pos(1, 0, 1).tex(sprite.getMaxU(), sprite.getMinV()+pixelBelow).endVertex();
 		Tessellator.getInstance().draw();
 		GL11.glPopMatrix();
 
@@ -96,17 +107,6 @@ public class EnergyProviderTESR extends TileEntitySpecialRenderer<EnergyProvider
 
 		Tessellator.getInstance().draw();
 		GL11.glPopMatrix();
-
-		if (te.laser_timer > 0) {
-			BlockPos newPos = te.laser_target.subtract(te.getPos());
-			lightning = new LightningRender(new Vec3d(x + .5, y + .9, z + .5), new Vec3d(newPos.getX(), newPos.getY() - .4, newPos.getZ()));
-			lightning.color = 0xaa0000;
-			lightning.bendsMin = 5;
-			lightning.bendsMax = 6;
-			lightning.maxDeviation = .5;
-			lightning.calculate();
-			lightning.render();
-		}
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5, y + pixel * 14, z + 0.5);

@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "defier:energyprovidermodifierbase"
+  },
+  "pattern": [
+    "qsq",
+    "ses",
+    "qsq"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "s": {
+      "item": "defier:strongstar"
+    },
+    "e": {
+      "item": "defier:energyprovider"
+    },
+    "q": {
+      "ore": "gemQuartz",
+      "type": "forge:ore_dict"
+    }
+  }
+}

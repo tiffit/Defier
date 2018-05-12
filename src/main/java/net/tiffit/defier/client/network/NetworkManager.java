@@ -17,7 +17,7 @@ public class NetworkManager {
     public static void registerMessages() {
     	NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel("ChannelDefier");
     	NETWORK.registerMessage(PacketUpdateRF.Handler.class, PacketUpdateRF.class, nextID(), Side.CLIENT);
-    	NETWORK.registerMessage(PacketEnergyProviderSend.Handler.class, PacketEnergyProviderSend.class, nextID(), Side.CLIENT);
+    	NETWORK.registerMessage(PacketCreateLightning.Handler.class, PacketCreateLightning.class, nextID(), Side.CLIENT);
     	NETWORK.registerMessage(PacketUpdateContainer.Handler.class, PacketUpdateContainer.class, nextID(), Side.CLIENT);
     }
 	

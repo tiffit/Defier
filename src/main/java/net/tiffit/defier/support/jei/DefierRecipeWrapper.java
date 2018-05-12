@@ -9,7 +9,6 @@ import net.tiffit.defier.Defier;
 import net.tiffit.defier.DefierRecipe;
 import net.tiffit.defier.ModItems;
 
-@SuppressWarnings("deprecation")
 public class DefierRecipeWrapper implements IRecipeWrapper {
 
 	private DefierRecipe recipe;

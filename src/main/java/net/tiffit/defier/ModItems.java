@@ -4,6 +4,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tiffit.defier.block.CompressorBlock;
 import net.tiffit.defier.block.DefierBlock;
 import net.tiffit.defier.block.EnergyProviderBlock;
+import net.tiffit.defier.block.EnergyProviderModifierBaseBlack;
+import net.tiffit.defier.block.EnergyProviderModifierBlock;
 import net.tiffit.defier.block.PatternMolderBlock;
 import net.tiffit.defier.item.BatteryItem;
 import net.tiffit.defier.item.DefierItem;
@@ -56,5 +58,17 @@ public class ModItems {
 	
 	@GameRegistry.ObjectHolder(Defier.MODID + ":battery.amazing")
 	public static BatteryItem batteryamazing;
+	
+	@GameRegistry.ObjectHolder(Defier.MODID + ":energyprovidermodifier.attack")
+	public static EnergyProviderModifierBlock attackmodifier;
+	
+	@GameRegistry.ObjectHolder(Defier.MODID + ":energyprovidermodifier.range")
+	public static EnergyProviderModifierBlock rangemodifier;
+	
+	@GameRegistry.ObjectHolder(Defier.MODID + ":energyprovidermodifier.efficiency")
+	public static EnergyProviderModifierBlock efficiencymodifier;
+	
+	@GameRegistry.ObjectHolder(Defier.MODID + ":energyprovidermodifierbase")
+	public static EnergyProviderModifierBaseBlack basemodifier;
 	
 }

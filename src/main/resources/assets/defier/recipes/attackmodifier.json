@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "defier:energyprovidermodifier.attack"
+  },
+  "pattern": [
+    " d ",
+    "gbg",
+    " d "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "d": {
+      "item": "minecraft:diamond_sword"
+    },
+    "b": {
+      "item": "defier:energyprovidermodifierbase"
+    },
+    "g": {
+      "item": "minecraft:golden_sword"
+    }
+  }
+}

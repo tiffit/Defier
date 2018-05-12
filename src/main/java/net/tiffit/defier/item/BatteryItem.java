@@ -41,7 +41,7 @@ public class BatteryItem extends DefierItem implements IEnergyContainerItem {
 	public boolean showDurabilityBar(ItemStack stack) {
 		return true;
 	}
-
+	
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 		EnergyStorage storage = getStorage(stack);
@@ -66,7 +66,7 @@ public class BatteryItem extends DefierItem implements IEnergyContainerItem {
 
 	@Override
 	public int getEnergyStored(ItemStack c) {
-		return getStorage(c).getMaxEnergyStored();
+		return getStorage(c).getEnergyStored();
 	}
 
 	@Override

@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "defier:energyprovidermodifier.range"
+  },
+  "pattern": [
+    " r ",
+    "mbm",
+    " r "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "r": {
+      "item": "minecraft:rabbit_foot"
+    },
+    "b": {
+      "item": "defier:energyprovidermodifierbase"
+    },
+    "m": {
+      "item": "minecraft:speckled_melon"
+    }
+  }
+}

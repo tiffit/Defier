@@ -1,130 +1,210 @@
 package net.tiffit.defier.tileentity;
 
+import java.util.List;
+
 import cofh.redstoneflux.api.IEnergyReceiver;
-import net.minecraft.client.Minecraft;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.oredict.OreDictionary;
 import net.tiffit.defier.ConfigData;
+import net.tiffit.defier.block.EnergyProviderModifierBlock;
+import net.tiffit.defier.block.EnergyProviderModifierBlock.ModifierType;
 import net.tiffit.defier.client.network.NetworkManager;
-import net.tiffit.defier.client.network.PacketEnergyProviderSend;
+import net.tiffit.defier.client.network.PacketCreateLightning;
 import net.tiffit.defier.client.network.PacketUpdateRF;
 import net.tiffit.defier.util.LargeEnergyStorage;
 
-public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyReceiver, ITickable{
+public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyReceiver, ITickable {
 
 	private int max_delay = 100;
 	private int delay = max_delay;
-	
+
 	private int speed_upgrades = 0;
 	private int storage_upgrades = 0;
 	
-	public int laser_timer = 0;
-	public BlockPos laser_target = null;
+	private ProviderColor color;
+
 	public EnergyProviderTileEntity() {
 		rf = new LargeEnergyStorage(ConfigData.ENERGYPROVIDER_MAX_STORAGE, ConfigData.ENERGYPROVIDER_MAX_STORAGE, 0);
+		color = ProviderColor.Red;
 	}
-    
+	
+	public static enum ProviderColor{
+		Black(0), Red(0xaa0000), Green(0x00aa00),
+		Brown(0xf4aa42), Blue(0x0000aa), Purple(0x941bc4),
+		Cyan(0x2288d6), Light_Gray(0xb7b7b7), Gray(0x6d6d6d),
+		Pink(0xff429d), Lime(0x8dff41), Yellow(0xfffa0c),
+		Light_Blue(0x3f4fff), Magenta(0xe500ff), Orange(0xffbb00),
+		White(0xffffff);
+		
+		public final int color;
+		
+		ProviderColor(int color){
+			this.color = color;
+		}
+		
+		public String getDyeName(){
+			return "dye" + name().replaceAll("_", "");
+		}
+		
+		public static ProviderColor getDye(ItemStack stack){
+			int[] ids = OreDictionary.getOreIDs(stack);
+			for(int id : ids){
+				for(ProviderColor color : ProviderColor.values()){
+					if(color.getDyeName().equals(OreDictionary.getOreName(id)))return color;
+				}
+			}
+			return null;
+		}
+	}
+
 	@Override
 	public void update() {
-		if(!world.isRemote){
-			if(speed_upgrades > 0 || storage_upgrades > 0){
+		ModifierType mod = getMod();
+		if (!world.isRemote) {
+			if (speed_upgrades > 0 || storage_upgrades > 0) {
 				calcUpgrades();
-				if(delay > max_delay)delay = max_delay;
-			}
-			DefierTileEntity te = findDefier();
-			if(te != null){
-				if(delay <= 0){
+				if (delay > max_delay)
 					delay = max_delay;
-					long max = te.getStorage().getMaxEnergyStored();
-					long current = te.getStorage().getEnergyStored();
-					if(max > 0 && current < max){
-						long amount = max - current;
-						if(amount > rf.getEnergyStored())amount = rf.getEnergyStored();
-						rf.setEnergyStored(rf.getEnergyStored() - amount);
-						te.getStorage().setEnergyStored(current + amount);
-						LargeEnergyStorage defier = te.rf;
-						if(amount > 0){
+			}
+			if (mod == ModifierType.Attack) {
+				if (delay <= 0) {
+					if (rf.getEnergyStored() >= ConfigData.MODIFIER_ATTACK_COST) {
+						delay = max_delay;
+						int range = ConfigData.MODIFIER_ATTACK_RANGE;
+						List<EntityMob> found = (List<EntityMob>) world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(pos.down(range).south(range).east(range), pos.up(range).north(range).west(range)));
+						if (found.size() > 0) {
+							EntityMob mob = found.get(0);
+							mob.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 5 * (storage_upgrades + 1));
+							NetworkManager.NETWORK.sendToDimension(new PacketCreateLightning(new Vec3d(getPos()).addVector(.5, .9, .5), mob.getPositionVector().addVector(0, mob.height / 2, 0)), world.provider.getDimension());
+							rf.setEnergyStored(rf.getEnergyStored()-ConfigData.MODIFIER_ATTACK_COST);
 							NetworkManager.NETWORK.sendToDimension(new PacketUpdateRF(getPos(), rf.getEnergyStored(), rf.getMaxEnergyStored()), world.provider.getDimension());
-							NetworkManager.NETWORK.sendToDimension(new PacketUpdateRF(te.getPos(), defier.getEnergyStored(), defier.getMaxEnergyStored()), world.provider.getDimension());
-							NetworkManager.NETWORK.sendToDimension(new PacketEnergyProviderSend(getPos(), te.getPos()), world.provider.getDimension());
 						}
 					}
-				}else{
+				} else {
 					delay--;
 				}
-			}else delay = max_delay;
-		}else{
-			if(laser_timer > 0){
-				laser_timer--;
-	    		Minecraft.getMinecraft().world.playSound(getPos(), SoundEvents.BLOCK_NOTE_XYLOPHONE, SoundCategory.BLOCKS, 0.1f, 0.1f, false);
-	    		if(laser_timer <= 0){
-	    			Minecraft.getMinecraft().world.playSound(getPos(), SoundEvents.BLOCK_NOTE_XYLOPHONE, SoundCategory.BLOCKS, 0.5f, 1f, false);
-	    		}
+			} else {
+				DefierTileEntity te = findDefier();
+				if (te != null) {
+					if (delay <= 0) {
+						delay = max_delay;
+						long max = te.getStorage().getMaxEnergyStored();
+						long current = te.getStorage().getEnergyStored();
+						if (max > 0 && current < max) {
+							long amount = max - current;
+							if (amount > rf.getEnergyStored())
+								amount = rf.getEnergyStored();
+							rf.setEnergyStored(rf.getEnergyStored() - amount);
+							te.getStorage().setEnergyStored(current + amount + (mod == ModifierType.Efficiency ? (int)(amount*0.05) : 0));
+							LargeEnergyStorage defier = te.rf;
+							if (amount > 0) {
+								NetworkManager.NETWORK.sendToDimension(new PacketUpdateRF(getPos(), rf.getEnergyStored(), rf.getMaxEnergyStored()), world.provider.getDimension());
+								NetworkManager.NETWORK.sendToDimension(new PacketUpdateRF(te.getPos(), defier.getEnergyStored(), defier.getMaxEnergyStored()), world.provider.getDimension());
+								NetworkManager.NETWORK.sendToDimension(new PacketCreateLightning(new Vec3d(getPos()).addVector(.5, .9, .5), new Vec3d(te.getPos()).addVector(.5, .5, .5), color.color), world.provider.getDimension());
+							}
+						}
+					} else {
+						delay--;
+					}
+				} else
+					delay = max_delay;
 			}
 		}
 	}
-	
-	public int getSpeedUpgrades(){
+
+	public ModifierType getMod() {
+		IBlockState state = world.getBlockState(getPos().down());
+		if (state != null && state.getBlock() instanceof EnergyProviderModifierBlock) {
+			return ((EnergyProviderModifierBlock) state.getBlock()).modifier;
+		}
+		return null;
+	}
+
+	public int getSpeedUpgrades() {
 		return speed_upgrades;
 	}
-	
-	public int getStorageUpgrades(){
+
+	public int getStorageUpgrades() {
 		return storage_upgrades;
 	}
-	
-	public void addSpeedUpgrade(){
-		if(this.speed_upgrades < 8)this.speed_upgrades++;
+
+	public void addSpeedUpgrade() {
+		if (this.speed_upgrades < 8)
+			this.speed_upgrades++;
+	}
+
+	public void addStorageUpgrade() {
+		if (this.storage_upgrades < 4)
+			this.storage_upgrades++;
 	}
 	
-	public void addStorageUpgrade(){
-		if(this.storage_upgrades < 4)this.storage_upgrades++;
+	public void setColor(ProviderColor color){
+		this.color = color;
 	}
-	
-	public void calcUpgrades(){
-		max_delay = 100 - speed_upgrades*10;
-		rf.setCapacity((long)(ConfigData.ENERGYPROVIDER_MAX_STORAGE*(Math.pow(ConfigData.ENERGYPROVIDER_STORAGE_BASE, storage_upgrades))));
+
+	public void calcUpgrades() {
+		max_delay = 100 - speed_upgrades * 10;
+		rf.setCapacity((long) (ConfigData.ENERGYPROVIDER_MAX_STORAGE * (Math.pow(ConfigData.ENERGYPROVIDER_STORAGE_BASE, storage_upgrades))));
 	}
-	
+
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setInteger("upgrades", speed_upgrades);
 		compound.setInteger("storage_upgrades", storage_upgrades);
 		compound.setInteger("delay", delay);
+		compound.setInteger("color", color.ordinal());
 		return super.writeToNBT(compound);
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		speed_upgrades = compound.getInteger("upgrades");
 		storage_upgrades = compound.getInteger("storage_upgrades");
 		delay = compound.getInteger("delay");
+		if(compound.hasKey("color"))color = ProviderColor.values()[compound.getInteger("color")];
 		calcUpgrades();
 		super.readFromNBT(compound);
 	}
-	
-	public DefierTileEntity findDefier(){
-		for(int x = -10; x <= 10; x++){
-			for(int y = -10; y <= 10; y++){
-				for(int z = -10; z <= 10; z++){
+
+	public DefierTileEntity findDefier() {
+		BlockPos nearest = null;
+		DefierTileEntity nearestTE = null;
+		int searchRange = 10;
+		if(getMod() == ModifierType.Range)searchRange += 10;
+		double nearestDistance = searchRange*searchRange + 1;
+		for (int x = -searchRange; x <= searchRange; x++) {
+			for (int y = -searchRange; y <= searchRange; y++) {
+				for (int z = -searchRange; z <= searchRange; z++) {
 					BlockPos pos = getPos().add(x, y, z);
-					if(pos.getY() <= 0 || pos.getY() > 256)continue;
+					if (pos.getY() <= 0 || pos.getY() > 256)
+						continue;
 					TileEntity ent = world.getTileEntity(pos);
-					if(ent != null && ent instanceof DefierTileEntity)return (DefierTileEntity) ent;
+					double distance = pos.distanceSq(getPos());
+					if (ent != null && ent instanceof DefierTileEntity && distance < nearestDistance){
+						nearest = pos;
+						nearestTE = (DefierTileEntity) ent;
+						nearestDistance = distance;
+					}
 				}
 			}
 		}
-		return null;
+		return nearestTE;
 	}
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityEnergy.ENERGY) {
 			return CapabilityEnergy.ENERGY.cast(new net.minecraftforge.energy.IEnergyStorage() {
 
@@ -163,20 +243,21 @@ public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyRec
 				}
 			});
 		}
-        return super.getCapability(capability, facing);
-    }
-    
+		return super.getCapability(capability, facing);
+	}
+
 	@Override
 	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 		int recieve = (int) rf.receiveEnergy(maxReceive, simulate);
-		if(!world.isRemote)NetworkManager.NETWORK.sendToDimension(new PacketUpdateRF(getPos(), rf.getEnergyStored(), rf.getMaxEnergyStored()), world.provider.getDimension());
+		if (!world.isRemote)
+			NetworkManager.NETWORK.sendToDimension(new PacketUpdateRF(getPos(), rf.getEnergyStored(), rf.getMaxEnergyStored()), world.provider.getDimension());
 		markDirty();
 		return recieve;
 	}
-	
+
 	@Override
 	public boolean canConnectEnergy(EnumFacing from) {
 		return true;
 	}
-	
+
 }

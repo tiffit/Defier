@@ -16,6 +16,9 @@ import net.tiffit.defier.ModItems;
 import net.tiffit.defier.block.CompressorBlock;
 import net.tiffit.defier.block.DefierBlock;
 import net.tiffit.defier.block.EnergyProviderBlock;
+import net.tiffit.defier.block.EnergyProviderModifierBaseBlack;
+import net.tiffit.defier.block.EnergyProviderModifierBlock;
+import net.tiffit.defier.block.EnergyProviderModifierBlock.ModifierType;
 import net.tiffit.defier.block.PatternMolderBlock;
 import net.tiffit.defier.item.BatteryItem;
 import net.tiffit.defier.item.DefierItem;
@@ -45,6 +48,11 @@ public class CommonProxy {
     	reg.register(new DefierBlock());
     	reg.register(new PatternMolderBlock());
     	reg.register(new EnergyProviderBlock());
+    	reg.register(new EnergyProviderModifierBlock(ModifierType.Attack));
+    	reg.register(new EnergyProviderModifierBlock(ModifierType.Range));
+    	reg.register(new EnergyProviderModifierBlock(ModifierType.Efficiency));
+    	reg.register(new EnergyProviderModifierBaseBlack());
+
     	
     	GameRegistry.registerTileEntity(CompressorTileEntity.class, Defier.MODID + "_compressor");
     	GameRegistry.registerTileEntity(DefierTileEntity.class, Defier.MODID + "_defier");
@@ -59,6 +67,10 @@ public class CommonProxy {
     	registerItemBlock(reg, ModItems.defier);
     	registerItemBlock(reg, ModItems.patternmolder);
     	registerItemBlock(reg, ModItems.energyprovider);
+    	registerItemBlock(reg, ModItems.attackmodifier);
+    	registerItemBlock(reg, ModItems.rangemodifier);
+    	registerItemBlock(reg, ModItems.efficiencymodifier);
+    	registerItemBlock(reg, ModItems.basemodifier);
 
     	reg.register(new DefierItem("largemass"));
     	reg.register(new DefierItem("defiercore"));
