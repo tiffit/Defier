@@ -3,7 +3,6 @@ package net.tiffit.defier;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.text.DecimalFormat;
 
 import org.apache.logging.log4j.Logger;
 
@@ -33,31 +32,39 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.tiffit.defier.client.network.NetworkManager;
+import net.tiffit.defier.container.CompressorContainer;
+import net.tiffit.defier.container.DefierContainer;
+import net.tiffit.defier.container.PatternMolderContainer;
 import net.tiffit.defier.event.DefierRecipeRegistryEvent;
+import net.tiffit.defier.gui.CompressorGui;
+import net.tiffit.defier.gui.DefierGui;
+import net.tiffit.defier.gui.PatternMolderGui;
 import net.tiffit.defier.proxy.CommonProxy;
+import net.tiffit.defier.tileentity.CompressorTileEntity;
+import net.tiffit.defier.tileentity.DefierTileEntity;
+import net.tiffit.defier.tileentity.PatternMolderTileEntity;
+import net.tiffit.tiffitlib.GuiManager;
+import net.tiffit.tiffitlib.GuiManager.GuiElement;
 
 @Mod(modid = Defier.MODID, version = Defier.VERSION, name = Defier.NAME, useMetadata = true, dependencies = Defier.DEPENDENCIES, guiFactory = Defier.CONFIG_GUI_FACTORY)
 @Mod.EventBusSubscriber
 public class Defier {
 	public static final String MODID = "defier";
 	public static final String NAME = "Defier";
-	public static final String VERSION = "1.3.1";
-	public static final String DEPENDENCIES = "required-after:codechickenlib;required-after:redstoneflux;";
+	public static final String VERSION = "1.4.0";
+	public static final String DEPENDENCIES = "required-after:codechickenlib;required-after:redstoneflux;required-after:tiffitlib;";
 	public static final String CONFIG_GUI_FACTORY = "net.tiffit.defier.client.gui.config.ConfigGuiFactory";
 
 	public static CreativeTabs CTAB = new CreativeTabs("defier") {
 
 		@Override
 		public ItemStack getTabIconItem() {
-			return new ItemStack(ModItems.defiercore);
+			return new ItemStack(DefierItems.defiercore);
 		}
 
 	};
 
 	public static Logger logger;
-	public static DecimalFormat LARGE_NUMBER = new DecimalFormat("#,###");
 	public static File configFolder;
 	public static Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
 
@@ -77,13 +84,16 @@ public class Defier {
 		config = new Configuration(new File(configFolder, "defier.cfg"), "1.0.0", true);
 		ConfigData.load(config);
 		logger = event.getModLog();
-		NetworkManager.registerMessages();
 		proxy.preInit(event);
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent e) {
-		NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
+		GuiManager guihandler = new GuiManager();
+		guihandler.registerElement(new GuiElement(CompressorTileEntity.class, CompressorContainer.class, CompressorGui.class));
+		guihandler.registerElement(new GuiElement(DefierTileEntity.class, DefierContainer.class, DefierGui.class));
+		guihandler.registerElement(new GuiElement(PatternMolderTileEntity.class, PatternMolderContainer.class, PatternMolderGui.class));
+		NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, guihandler);
 		proxy.init(e);
 		MinecraftForge.EVENT_BUS.post(new DefierRecipeRegistryEvent());
 	}
@@ -103,8 +113,9 @@ public class Defier {
 		e.registerRecipe(MODID, Items.COAL, 75_000L);
 		e.registerRecipe(MODID, Items.COOKIE, 200_000L);
 		e.registerRecipe(MODID, Items.IRON_INGOT, 750_000L);
-		e.registerRecipe(MODID, Items.BUCKET, 2_000_000L);
+		e.registerRecipe(MODID, Items.GLOWSTONE_DUST, 900_000L);
 		e.registerRecipe(MODID, Items.SLIME_BALL, 1_000_000L);
+		e.registerRecipe(MODID, Items.BUCKET, 2_000_000L);
 		e.registerRecipe(MODID, Items.GOLD_INGOT, 3_000_000L);
 		e.registerRecipe(MODID, Items.ENDER_EYE, 20_000_000L);
 		e.registerRecipe(MODID, Items.BLAZE_ROD, 40_000_000L);

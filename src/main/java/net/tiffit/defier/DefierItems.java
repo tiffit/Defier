@@ -12,7 +12,7 @@ import net.tiffit.defier.item.DefierItem;
 import net.tiffit.defier.item.EnergyStarItem;
 import net.tiffit.defier.item.PatternItem;
 
-public class ModItems {
+public class DefierItems {
 
 	@GameRegistry.ObjectHolder(Defier.MODID + ":compressor")
 	public static CompressorBlock compressor;

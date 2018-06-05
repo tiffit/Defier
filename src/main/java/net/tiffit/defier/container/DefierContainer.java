@@ -1,29 +1,30 @@
 package net.tiffit.defier.container;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import net.tiffit.defier.ModItems;
+import net.tiffit.defier.DefierItems;
 import net.tiffit.defier.tileentity.DefierTileEntity;
+import net.tiffit.tiffitlib.generics.GenericContainer;
 
-public class DefierContainer extends Container {
+public class DefierContainer extends GenericContainer {
 
 	private DefierTileEntity te;
 
-	public DefierContainer(IInventory playerInventory, DefierTileEntity te) {
-		this.te = te;
+	public DefierContainer(IInventory playerInventory, TileEntity tilent) {
+		super(playerInventory, tilent);
+		this.te = (DefierTileEntity) tilent;
 
 		IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		addSlotToContainer(new SlotItemHandler(itemHandler, 0, 22, 23){
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				if(stack.getItem() != ModItems.pattern || !stack.hasTagCompound() || !stack.getTagCompound().hasKey("defieritem"))return false;
+				if(stack.getItem() != DefierItems.pattern || !stack.hasTagCompound() || !stack.getTagCompound().hasKey("defieritem"))return false;
 				return true;
 			}
 		});
@@ -34,21 +35,6 @@ public class DefierContainer extends Container {
 			}
 		});
 		addPlayerSlots(playerInventory);
-	}
-
-	private void addPlayerSlots(IInventory playerInventory) {
-		for (int row = 0; row < 3; ++row) {
-			for (int col = 0; col < 9; ++col) {
-				int x = 8 + col * 18;
-				int y = row * 18 + 84;
-				this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, x, y));
-			}
-		}
-		for (int row = 0; row < 9; ++row) {
-			int x = 8 + row * 18;
-			int y = 58 + 84;
-			this.addSlotToContainer(new Slot(playerInventory, row, x, y));
-		}
 	}
 
 	@Override
@@ -76,19 +62,6 @@ public class DefierContainer extends Container {
 		}
 
 		return itemstack;
-	}
-
-	@Override
-	public void updateProgressBar(int id, int data) {
-		super.updateProgressBar(id, data);
-	}
-
-	@Override
-	public void detectAndSendChanges() {
-		super.detectAndSendChanges();
-		for (int i = 0; i < this.listeners.size(); ++i) {
-			IContainerListener icontainerlistener = this.listeners.get(i);
-		}
 	}
 
 	@Override

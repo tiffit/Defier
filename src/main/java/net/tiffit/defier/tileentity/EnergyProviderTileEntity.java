@@ -20,10 +20,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.tiffit.defier.ConfigData;
 import net.tiffit.defier.block.EnergyProviderModifierBlock;
 import net.tiffit.defier.block.EnergyProviderModifierBlock.ModifierType;
-import net.tiffit.defier.client.network.NetworkManager;
-import net.tiffit.defier.client.network.PacketCreateLightning;
-import net.tiffit.defier.client.network.PacketUpdateRF;
-import net.tiffit.defier.util.LargeEnergyStorage;
+import net.tiffit.tiffitlib.network.NetworkManager;
+import net.tiffit.tiffitlib.network.PacketCreateLightning;
+import net.tiffit.tiffitlib.utils.LargeEnergyStorage;
 
 public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyReceiver, ITickable {
 
@@ -87,9 +86,9 @@ public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyRec
 						if (found.size() > 0) {
 							EntityMob mob = found.get(0);
 							mob.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 5 * (storage_upgrades + 1));
-							NetworkManager.NETWORK.sendToDimension(new PacketCreateLightning(new Vec3d(getPos()).addVector(.5, .9, .5), mob.getPositionVector().addVector(0, mob.height / 2, 0)), world.provider.getDimension());
+							NetworkManager.NETWORK.sendToAllAround(new PacketCreateLightning(new Vec3d(getPos()).addVector(.5, .9, .5), mob.getPositionVector().addVector(0, mob.height / 2, 0), color.color), getSyncTargetPoint());
 							rf.setEnergyStored(rf.getEnergyStored()-ConfigData.MODIFIER_ATTACK_COST);
-							NetworkManager.NETWORK.sendToDimension(new PacketUpdateRF(getPos(), rf.getEnergyStored(), rf.getMaxEnergyStored()), world.provider.getDimension());
+							syncRFClient();
 						}
 					}
 				} else {
@@ -108,11 +107,10 @@ public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyRec
 								amount = rf.getEnergyStored();
 							rf.setEnergyStored(rf.getEnergyStored() - amount);
 							te.getStorage().setEnergyStored(current + amount + (mod == ModifierType.Efficiency ? (int)(amount*0.05) : 0));
-							LargeEnergyStorage defier = te.rf;
 							if (amount > 0) {
-								NetworkManager.NETWORK.sendToDimension(new PacketUpdateRF(getPos(), rf.getEnergyStored(), rf.getMaxEnergyStored()), world.provider.getDimension());
-								NetworkManager.NETWORK.sendToDimension(new PacketUpdateRF(te.getPos(), defier.getEnergyStored(), defier.getMaxEnergyStored()), world.provider.getDimension());
-								NetworkManager.NETWORK.sendToDimension(new PacketCreateLightning(new Vec3d(getPos()).addVector(.5, .9, .5), new Vec3d(te.getPos()).addVector(.5, .5, .5), color.color), world.provider.getDimension());
+								syncRFClient();
+								te.syncRFClient();
+								NetworkManager.NETWORK.sendToAllAround(new PacketCreateLightning(new Vec3d(getPos()).addVector(.5, .9, .5), new Vec3d(te.getPos()).addVector(.5, .5, .5), color.color), getSyncTargetPoint());
 							}
 						}
 					} else {
@@ -179,7 +177,6 @@ public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyRec
 	}
 
 	public DefierTileEntity findDefier() {
-		BlockPos nearest = null;
 		DefierTileEntity nearestTE = null;
 		int searchRange = 10;
 		if(getMod() == ModifierType.Range)searchRange += 10;
@@ -193,7 +190,6 @@ public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyRec
 					TileEntity ent = world.getTileEntity(pos);
 					double distance = pos.distanceSq(getPos());
 					if (ent != null && ent instanceof DefierTileEntity && distance < nearestDistance){
-						nearest = pos;
 						nearestTE = (DefierTileEntity) ent;
 						nearestDistance = distance;
 					}
@@ -249,8 +245,7 @@ public class EnergyProviderTileEntity extends RFTileEntity implements IEnergyRec
 	@Override
 	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 		int recieve = (int) rf.receiveEnergy(maxReceive, simulate);
-		if (!world.isRemote)
-			NetworkManager.NETWORK.sendToDimension(new PacketUpdateRF(getPos(), rf.getEnergyStored(), rf.getMaxEnergyStored()), world.provider.getDimension());
+		if (!world.isRemote)syncRFClient();
 		markDirty();
 		return recieve;
 	}

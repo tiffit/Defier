@@ -1,21 +1,22 @@
 package net.tiffit.defier.gui;
 
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.tiffit.defier.Defier;
-import net.tiffit.defier.container.CompressorContainer;
 import net.tiffit.defier.tileentity.CompressorTileEntity;
+import net.tiffit.tiffitlib.generics.GenericContainer;
+import net.tiffit.tiffitlib.generics.GenericGuiContainer;
 
-public class CompressorGui extends GuiContainer {
+public class CompressorGui extends GenericGuiContainer {
 
     private static final ResourceLocation background = new ResourceLocation(Defier.MODID, "textures/gui/compressor.png");
 
     private CompressorTileEntity te;
     
-    public CompressorGui(CompressorTileEntity te, CompressorContainer container) {
-        super(container);
-        this.te = te;
+    public CompressorGui(TileEntity tilent, GenericContainer container) {
+        super(tilent, container);
+        this.te = (CompressorTileEntity) tilent;
     }
 
     @Override

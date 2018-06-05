@@ -6,7 +6,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.tiffit.defier.util.LargeEnergyStorage;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.tiffit.defier.network.PacketUpdateRF;
+import net.tiffit.tiffitlib.network.NetworkManager;
+import net.tiffit.tiffitlib.utils.LargeEnergyStorage;
 
 public class RFTileEntity extends TileEntity implements IEnergyHandler {
 
@@ -53,5 +56,14 @@ public class RFTileEntity extends TileEntity implements IEnergyHandler {
     public LargeEnergyStorage getStorage(){
     	return rf;
     }
+    
+    public void syncRFClient(){
+    	PacketUpdateRF packet = new PacketUpdateRF(getPos(), rf.getEnergyStored(), rf.getMaxEnergyStored());
+		NetworkManager.NETWORK.sendToAllAround(packet, getSyncTargetPoint());
+    }
 
+    public TargetPoint getSyncTargetPoint(){
+    	return NetworkManager.getSyncTargetPoint(this);
+    }
+    
 }

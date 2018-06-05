@@ -1,21 +1,18 @@
 package net.tiffit.defier.gui;
 
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.tiffit.defier.Defier;
-import net.tiffit.defier.container.PatternMolderContainer;
-import net.tiffit.defier.tileentity.PatternMolderTileEntity;
+import net.tiffit.tiffitlib.generics.GenericContainer;
+import net.tiffit.tiffitlib.generics.GenericGuiContainer;
 
-public class PatternMolderGui extends GuiContainer {
+public class PatternMolderGui extends GenericGuiContainer {
 
     private static final ResourceLocation background = new ResourceLocation(Defier.MODID, "textures/gui/patternmolder.png");
-
-    private PatternMolderTileEntity te;
     
-    public PatternMolderGui(PatternMolderTileEntity te, PatternMolderContainer container) {
-        super(container);
-        this.te = te;
+    public PatternMolderGui(TileEntity tilent, GenericContainer container) {
+        super(tilent, container);
     }
 
     @Override
@@ -23,13 +20,6 @@ public class PatternMolderGui extends GuiContainer {
     	this.drawDefaultBackground();
     	super.drawScreen(mouseX, mouseY, partialTicks);
     	this.renderHoveredToolTip(mouseX, mouseY);
-    }
-    
-    @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-    	super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-    	int mx = mouseX - guiLeft;
-    	int my = mouseY - guiTop;
     }
     
     public void drawCenteredStringWithoutShadow(FontRenderer fontRendererIn, String text, int x, int y, int color)

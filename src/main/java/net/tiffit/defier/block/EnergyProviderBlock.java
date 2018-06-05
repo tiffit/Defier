@@ -2,8 +2,8 @@ package net.tiffit.defier.block;
 
 import java.util.List;
 
+import codechicken.lib.render.item.IItemRenderer;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCactus;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -22,11 +22,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.tiffit.defier.Defier;
-import net.tiffit.defier.ModItems;
+import net.tiffit.defier.DefierItems;
+import net.tiffit.defier.client.render.RenderEnergyProviderItem;
 import net.tiffit.defier.tileentity.EnergyProviderTileEntity;
 import net.tiffit.defier.tileentity.EnergyProviderTileEntity.ProviderColor;
+import net.tiffit.tiffitlib.RegistryHelper.ISpecialItemRender;
 
-public class EnergyProviderBlock extends Block implements ITileEntityProvider {
+public class EnergyProviderBlock extends Block implements ITileEntityProvider, ISpecialItemRender{
 
 	protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 2 / 16D, 1D);
 	protected static final AxisAlignedBB POLE_AABB = new AxisAlignedBB(7 / 16D, 0 / 16D, 7 / 16D, 9 / 16D, 12 / 16D, 9 / 16D);
@@ -35,12 +37,11 @@ public class EnergyProviderBlock extends Block implements ITileEntityProvider {
 		super(Material.IRON);
 		setUnlocalizedName(Defier.MODID + ".energyprovider");
 		setRegistryName("energyprovider");
-		setHardness(10.0F);
-		setResistance(100.0F);
+		setHardness(50.0F);
+		setResistance(3000.0F);
 		setSoundType(SoundType.METAL);
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(Defier.CTAB);
-		BlockCactus e;
 	}
 
 	@Override
@@ -94,12 +95,12 @@ public class EnergyProviderBlock extends Block implements ITileEntityProvider {
 		}
 		EnergyProviderTileEntity te = (EnergyProviderTileEntity) world.getTileEntity(pos);
 		if (!player.inventory.getCurrentItem().isEmpty()) {
-			if (te.getSpeedUpgrades() < 8 && player.inventory.getCurrentItem().getItem() == ModItems.speedstar) {
+			if (te.getSpeedUpgrades() < 8 && player.inventory.getCurrentItem().getItem() == DefierItems.speedstar) {
 				te.addSpeedUpgrade();
 				player.inventory.getCurrentItem().setCount(player.inventory.getCurrentItem().getCount() - 1);
 				player.sendMessage(new TextComponentString("Added Speed Upgrade " + te.getSpeedUpgrades() + "/8"));
 			}
-			if (te.getSpeedUpgrades() < 4 && player.inventory.getCurrentItem().getItem() == ModItems.energystar && te.getStorageUpgrades() == player.inventory.getCurrentItem().getMetadata()) {
+			if (te.getStorageUpgrades() < 4 && player.inventory.getCurrentItem().getItem() == DefierItems.energystar && te.getStorageUpgrades() == player.inventory.getCurrentItem().getMetadata()) {
 				te.addStorageUpgrade();
 				player.inventory.getCurrentItem().setCount(player.inventory.getCurrentItem().getCount() - 1);
 				player.sendMessage(new TextComponentString("Added Storage Upgrade " + te.getStorageUpgrades() + "/4"));
@@ -115,13 +116,18 @@ public class EnergyProviderBlock extends Block implements ITileEntityProvider {
 
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		EnergyProviderTileEntity te = (EnergyProviderTileEntity) worldIn.getTileEntity(pos);
-		ItemStack upgrade = new ItemStack(ModItems.speedstar, te.getSpeedUpgrades());
+		ItemStack upgrade = new ItemStack(DefierItems.speedstar, te.getSpeedUpgrades());
 		if (!upgrade.isEmpty())
 			InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), upgrade);
 		for (int i = 0; i < te.getStorageUpgrades(); i++) {
-			InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.energystar, 1, i));
+			InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(DefierItems.energystar, 1, i));
 		}
 		super.breakBlock(worldIn, pos, state);
+	}
+
+	@Override
+	public IItemRenderer getItemRender() {
+		return new RenderEnergyProviderItem();
 	}
 
 }

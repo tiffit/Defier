@@ -11,8 +11,8 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.tiffit.defier.ConfigData;
-import net.tiffit.defier.ModItems;
-import net.tiffit.defier.util.LargeEnergyStorage;
+import net.tiffit.defier.DefierItems;
+import net.tiffit.tiffitlib.utils.LargeEnergyStorage;
 
 public class CompressorTileEntity extends RFTileEntity implements IEnergyReceiver, ITickable{
 	
@@ -47,7 +47,7 @@ public class CompressorTileEntity extends RFTileEntity implements IEnergyReceive
     	if(is != null && progress > 0){
     		if(!getWorld().isRemote){
     			int itemSize = 1;
-    			if(is.getItem() == ModItems.largemass)itemSize = ConfigData.MASSIVESTAR_SIZE;
+    			if(is.getItem() == DefierItems.largemass)itemSize = ConfigData.MASSIVESTAR_SIZE;
     			progress-= is.getCount()*itemSize;
     		}
     		itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
@@ -73,7 +73,7 @@ public class CompressorTileEntity extends RFTileEntity implements IEnergyReceive
     public void finishCompression(){
     	if(world.isRemote || finished)return;
     	world.destroyBlock(getPos(), false);
-    	EntityItem item = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.defiercore, 1));
+    	EntityItem item = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(DefierItems.defiercore, 1));
     	item.setVelocity(0, 0.2, 0);
     	world.spawnEntity(item);
     	finished = true;

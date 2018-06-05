@@ -20,8 +20,8 @@ public class CompressorBlock extends Block implements ITileEntityProvider {
 		super(Material.IRON);
 		setUnlocalizedName(Defier.MODID + ".compressor");
 		setRegistryName("compressor");
-		setHardness(5.0F);
-		setResistance(10.0F);
+		setHardness(50.0F);
+		setResistance(1000.0F);
 		setSoundType(SoundType.METAL);
 		setHarvestLevel("pickaxe", 1);
 		setCreativeTab(Defier.CTAB);

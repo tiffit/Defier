@@ -1,6 +1,26 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "defier:items/energystar"
-  }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "defier:items/energystar"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"meta": 1
+			},
+			"model": "defier:item/energystar1"
+		},
+		{
+			"predicate": {
+				"meta": 2
+			},
+			"model": "defier:item/energystar2"
+		},
+		{
+			"predicate": {
+				"meta": 3
+			},
+			"model": "defier:item/energystar3"
+		}
+	]
 }

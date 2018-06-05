@@ -6,8 +6,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.tiffit.defier.DefierItems;
 import net.tiffit.defier.DefierRecipeRegistry;
-import net.tiffit.defier.ModItems;
 import net.tiffit.defier.util.DefierItemStackHandler;
 
 public class PatternMolderTileEntity extends TileEntity{
@@ -20,7 +20,7 @@ public class PatternMolderTileEntity extends TileEntity{
         }
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-        	if(slot == 0)if(stack.getItem() != ModItems.pattern)return stack;
+        	if(slot == 0)if(stack.getItem() != DefierItems.pattern)return stack;
         	if(slot == 1)if(DefierRecipeRegistry.findRecipeForStack(stack) == null)return stack;
         	if(slot == 2)return stack;
         	return super.insertItem(slot, stack, simulate);
@@ -46,7 +46,7 @@ public class PatternMolderTileEntity extends TileEntity{
     		itemStackHandler.setStackInSlot(2, ItemStack.EMPTY);
     		return;
     	}else{
-    		ItemStack result = new ItemStack(ModItems.pattern);
+    		ItemStack result = new ItemStack(DefierItems.pattern);
     		if(!result.hasTagCompound())result.setTagCompound(new NBTTagCompound());
     		NBTTagCompound nbt = result.getTagCompound();
     		nbt.setTag("defieritem", ingredient.serializeNBT());

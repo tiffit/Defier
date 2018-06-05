@@ -2,11 +2,9 @@ package net.tiffit.defier.client.tesr;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.tiffit.defier.proxy.ClientProxy;
 import net.tiffit.defier.tileentity.DefierTileEntity;
-import net.tiffit.defier.util.RenderUtils;
+import net.tiffit.tiffitlib.utils.RenderUtils;
 
 public class DefierTESR extends TileEntitySpecialRenderer<DefierTileEntity> {
 
@@ -28,9 +26,7 @@ public class DefierTESR extends TileEntitySpecialRenderer<DefierTileEntity> {
 		GL11.glScalef(scale, scale, scale);
 		if(te.rf.getMaxEnergyStored() == 0)GL11.glColor4d(0, 0, 0, 1);
 		else GL11.glColor4d(te.rf.getEnergyStored()/(double)te.rf.getMaxEnergyStored() * 0.7, 0, 0, 1);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(RenderUtils.blank);
-		GL11.glCallList(ClientProxy.defierSphereIdOutside);
-		GL11.glCallList(ClientProxy.defierSphereIdInside);
+		RenderUtils.renderCircle();
 		GL11.glColor4d(1, 1, 1, 1);
 		GL11.glPopMatrix();
 		

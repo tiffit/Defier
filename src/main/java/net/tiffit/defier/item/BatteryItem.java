@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.tiffit.tiffitlib.TiffitLib;
 
 public class BatteryItem extends DefierItem implements IEnergyContainerItem {
 
@@ -52,7 +53,7 @@ public class BatteryItem extends DefierItem implements IEnergyContainerItem {
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		EnergyStorage storage = getStorage(stack);
-		tooltip.add("Energy Stored: " + storage.getEnergyStored() + "RF/" + storage.getMaxEnergyStored() + "RF");
+		tooltip.add("Energy Stored: " + TiffitLib.LARGE_NUMBER.format(storage.getEnergyStored()) + "RF/" + TiffitLib.LARGE_NUMBER.format(storage.getMaxEnergyStored()) + "RF");
 	}
 
 	@Override

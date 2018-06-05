@@ -7,11 +7,11 @@ import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.tiffit.defier.DefierItems;
 import net.tiffit.defier.DefierRecipe;
 import net.tiffit.defier.DefierRecipeRegistry;
-import net.tiffit.defier.ModItems;
 import net.tiffit.defier.util.DefierItemStackHandler;
-import net.tiffit.defier.util.LargeEnergyStorage;
+import net.tiffit.tiffitlib.utils.LargeEnergyStorage;
 
 public class DefierTileEntity extends RFTileEntity implements ITickable{
 	
@@ -25,7 +25,7 @@ public class DefierTileEntity extends RFTileEntity implements ITickable{
         }
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-        	if(slot == 0)if(stack.getItem() != ModItems.pattern || !stack.hasTagCompound() || !stack.getTagCompound().hasKey("defieritem"))return stack;
+        	if(slot == 0)if(stack.getItem() != DefierItems.pattern || !stack.hasTagCompound() || !stack.getTagCompound().hasKey("defieritem"))return stack;
         	if(slot == 1)return stack;
         	return super.insertItem(slot, stack, simulate);
         }

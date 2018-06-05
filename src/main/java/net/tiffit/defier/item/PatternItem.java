@@ -13,9 +13,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tiffit.defier.Defier;
 import net.tiffit.defier.DefierRecipe;
 import net.tiffit.defier.DefierRecipeRegistry;
+import net.tiffit.tiffitlib.TiffitLib;
 
 public class PatternItem extends DefierItem {
 	
@@ -45,7 +45,7 @@ public class PatternItem extends DefierItem {
 			 }else{
 				 stored.clearCustomName();
 				 tooltip.add("Item: " + stored.getDisplayName());
-				 tooltip.add("Energy Cost: " + Defier.LARGE_NUMBER.format(recipe.getCost()) + "RF");
+				 tooltip.add("Energy Cost: " + TiffitLib.LARGE_NUMBER.format(recipe.getCost()) + "RF");
 			 }
 		 }
 	}

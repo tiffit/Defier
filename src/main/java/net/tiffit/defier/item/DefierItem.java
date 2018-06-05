@@ -10,5 +10,4 @@ public class DefierItem extends Item {
 		setRegistryName(name);
 		setCreativeTab(Defier.CTAB);
 	}
-	
 }

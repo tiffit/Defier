@@ -35,8 +35,8 @@ public class EnergyProviderModifierBlock extends Block {
 		super(Material.ROCK);
 		setUnlocalizedName(Defier.MODID + ".energyprovidermodifier." + type.toString());
 		setRegistryName("energyprovidermodifier." + type.toString());
-		setHardness(10.0F);
-		setResistance(10.0F);
+		setHardness(25.0F);
+		setResistance(3500.0F);
 		setSoundType(SoundType.STONE);
 		setHarvestLevel("pickaxe", 2);
 		setCreativeTab(Defier.CTAB);

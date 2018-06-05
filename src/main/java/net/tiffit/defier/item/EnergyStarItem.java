@@ -3,12 +3,17 @@ package net.tiffit.defier.item;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.tiffit.tiffitlib.RegistryHelper.IMultiMeta;
+import net.tiffit.tiffitlib.utils.MetaPropertyOverride;
 
-public class EnergyStarItem extends DefierItem {
+public class EnergyStarItem extends DefierItem implements IMultiMeta{
 
 	public EnergyStarItem() {
 		super("energystar");
 		setHasSubtypes(true);
+		addPropertyOverride(new ResourceLocation("meta"), new MetaPropertyOverride());
+
 	}
 	
 	@Override
@@ -26,4 +31,8 @@ public class EnergyStarItem extends DefierItem {
 		return super.getUnlocalizedName(stack) + stack.getMetadata();
 	}
 
+	@Override
+	public int getMaxMeta() {
+		return 3;
+	}
 }

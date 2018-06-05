@@ -24,8 +24,8 @@ public class PatternMolderBlock extends Block implements ITileEntityProvider {
 		super(Material.IRON);
 		setUnlocalizedName(Defier.MODID + ".patternmolder");
 		setRegistryName("patternmolder");
-		setHardness(3.0F);
-		setResistance(5.0F);
+		setHardness(50.0F);
+		setResistance(1000.0F);
 		setSoundType(SoundType.METAL);
 		setHarvestLevel("pickaxe", 1);
 		setCreativeTab(Defier.CTAB);
