@@ -18,6 +18,7 @@ public class PatternMolderTileEntity extends TileEntity{
         	PatternMolderTileEntity te = PatternMolderTileEntity.this;
         	te.markDirty();
         }
+        
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
         	if(slot == 0)if(stack.getItem() != DefierItems.pattern)return stack;
@@ -42,15 +43,20 @@ public class PatternMolderTileEntity extends TileEntity{
     public void updateResult(){
     	ItemStack pattern = itemStackHandler.getStackInSlot(0);
     	ItemStack ingredient = itemStackHandler.getStackInSlot(1);
+    	ItemStack output = itemStackHandler.getStackInSlot(2);
     	if(pattern.isEmpty() || ingredient.isEmpty() || DefierRecipeRegistry.findRecipeForStack(ingredient) == null){
-    		itemStackHandler.setStackInSlot(2, ItemStack.EMPTY);
-    		return;
+    		if(!output.isEmpty()){
+    			itemStackHandler.setStackInSlot(2, ItemStack.EMPTY);
+    		}
     	}else{
+    		
     		ItemStack result = new ItemStack(DefierItems.pattern);
     		if(!result.hasTagCompound())result.setTagCompound(new NBTTagCompound());
     		NBTTagCompound nbt = result.getTagCompound();
     		nbt.setTag("defieritem", ingredient.serializeNBT());
-    		itemStackHandler.setStackInSlot(2, result);
+    		if(output.isEmpty() || !ItemStack.areItemStacksEqual(result, output)){
+    			itemStackHandler.setStackInSlot(2, result);
+    		}
     	}
     }
     

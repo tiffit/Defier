@@ -65,13 +65,13 @@ public class PatternMolderContainer extends GenericContainer {
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
-
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
             if (index < 3) {
-                if (!this.mergeItemStack(itemstack1, 3, this.inventorySlots.size(), true)) {
+                if (this.mergeItemStack(itemstack1, 3, this.inventorySlots.size(), true)) {
+                	if(index == 2)inventorySlots.get(0).putStack(ItemStack.EMPTY);
                 	te.updateResult();
                     return ItemStack.EMPTY;
                 }

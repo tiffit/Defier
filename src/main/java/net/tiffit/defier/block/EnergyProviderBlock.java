@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -17,9 +18,9 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.tiffit.defier.Defier;
 import net.tiffit.defier.DefierItems;
@@ -93,22 +94,23 @@ public class EnergyProviderBlock extends Block implements ITileEntityProvider, I
 		if (world.isRemote) {
 			return true;
 		}
+		ItemStack current = player.inventory.getCurrentItem();
 		EnergyProviderTileEntity te = (EnergyProviderTileEntity) world.getTileEntity(pos);
-		if (!player.inventory.getCurrentItem().isEmpty()) {
-			if (te.getSpeedUpgrades() < 8 && player.inventory.getCurrentItem().getItem() == DefierItems.speedstar) {
+		if (!current.isEmpty()) {
+			if (te.getSpeedUpgrades() < 8 && current.getItem() == DefierItems.speedstar) {
 				te.addSpeedUpgrade();
-				player.inventory.getCurrentItem().setCount(player.inventory.getCurrentItem().getCount() - 1);
-				player.sendMessage(new TextComponentString("Added Speed Upgrade " + te.getSpeedUpgrades() + "/8"));
+				current.setCount(current.getCount() - 1);
+				player.world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1f, te.getSpeedUpgrades()/8f);
 			}
-			if (te.getStorageUpgrades() < 4 && player.inventory.getCurrentItem().getItem() == DefierItems.energystar && te.getStorageUpgrades() == player.inventory.getCurrentItem().getMetadata()) {
+			if (te.getStorageUpgrades() < 4 && current.getItem() == DefierItems.energystar && te.getStorageUpgrades() == current.getMetadata()) {
 				te.addStorageUpgrade();
-				player.inventory.getCurrentItem().setCount(player.inventory.getCurrentItem().getCount() - 1);
-				player.sendMessage(new TextComponentString("Added Storage Upgrade " + te.getStorageUpgrades() + "/4"));
+				current.setCount(current.getCount() - 1);
+				player.world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 1f, te.getStorageUpgrades()/4f);
 			}
-			ProviderColor color = ProviderColor.getDye(player.inventory.getCurrentItem());
+			ProviderColor color = ProviderColor.getDye(current);
 			if (color != null) {
 				te.setColor(color);
-				player.sendMessage(new TextComponentString("Changed color to " + color.getDyeName()));
+				player.world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_CLOTH_BREAK, SoundCategory.BLOCKS, 1f, 1f);
 			}
 		}
 		return true;

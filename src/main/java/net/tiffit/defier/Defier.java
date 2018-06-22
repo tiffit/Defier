@@ -27,6 +27,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -40,6 +41,7 @@ import net.tiffit.defier.gui.CompressorGui;
 import net.tiffit.defier.gui.DefierGui;
 import net.tiffit.defier.gui.PatternMolderGui;
 import net.tiffit.defier.proxy.CommonProxy;
+import net.tiffit.defier.support.top.TOPFunc;
 import net.tiffit.defier.tileentity.CompressorTileEntity;
 import net.tiffit.defier.tileentity.DefierTileEntity;
 import net.tiffit.defier.tileentity.PatternMolderTileEntity;
@@ -51,7 +53,7 @@ import net.tiffit.tiffitlib.GuiManager.GuiElement;
 public class Defier {
 	public static final String MODID = "defier";
 	public static final String NAME = "Defier";
-	public static final String VERSION = "1.4.0";
+	public static final String VERSION = "1.4.1";
 	public static final String DEPENDENCIES = "required-after:codechickenlib;required-after:redstoneflux;required-after:tiffitlib;";
 	public static final String CONFIG_GUI_FACTORY = "net.tiffit.defier.client.gui.config.ConfigGuiFactory";
 
@@ -84,6 +86,9 @@ public class Defier {
 		config = new Configuration(new File(configFolder, "defier.cfg"), "1.0.0", true);
 		ConfigData.load(config);
 		logger = event.getModLog();
+		
+		FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", TOPFunc.class.getName());
+		
 		proxy.preInit(event);
 	}
 

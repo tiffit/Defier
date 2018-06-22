@@ -30,7 +30,7 @@ public class CompressorContainer extends GenericContainer {
 				return !ConfigData.isCompressorBlacklisted(stack);
 			}
 		});
-
+		
 		addPlayerSlots(playerInventory);
 	}
 
