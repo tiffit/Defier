@@ -1,6 +1,5 @@
 package net.tiffit.defier.block;
 
-import codechicken.lib.render.item.IItemRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -19,11 +18,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.tiffit.defier.Defier;
-import net.tiffit.defier.client.render.RenderDefierItem;
 import net.tiffit.defier.tileentity.DefierTileEntity;
-import net.tiffit.tiffitlib.RegistryHelper.ISpecialItemRender;
 
-public class DefierBlock extends Block implements ITileEntityProvider, ISpecialItemRender{
+public class DefierBlock extends Block implements ITileEntityProvider{
 
 	public DefierBlock() {
 		super(Material.IRON);
@@ -87,11 +84,6 @@ public class DefierBlock extends Block implements ITileEntityProvider, ISpecialI
 		ItemStack slot2 = item.getStackInSlot(1);
 		if (!slot2.isEmpty())InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), slot2);
 		super.breakBlock(worldIn, pos, state);
-	}
-
-	@Override
-	public IItemRenderer getItemRender() {
-		return new RenderDefierItem();
 	}
 	
 }

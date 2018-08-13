@@ -12,7 +12,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
-version = "1.4.1"
+version = "1.4.2"
 group = "net.tiffit.defier" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "defier"
 
@@ -64,7 +64,6 @@ dependencies {
     deobfCompile "cofh:ThermalExpansion:1.12.2-5.3.7.27:universal"
     deobfCompile "cofh:ThermalDynamics:1.12.2-2.3.7.14:universal"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.23-16"
-    compileOnly "de.ellpeck.actuallyadditions:ActuallyAdditions:1.12.2-r133"
     deobfCompile "codechicken:CodeChickenLib:1.12.2-3.1.8.341:universal"
     compile project(':TiffitLib')
 }

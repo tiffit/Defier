@@ -2,7 +2,6 @@ package net.tiffit.defier.block;
 
 import java.util.List;
 
-import codechicken.lib.render.item.IItemRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -24,12 +23,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.tiffit.defier.Defier;
 import net.tiffit.defier.DefierItems;
-import net.tiffit.defier.client.render.RenderEnergyProviderItem;
 import net.tiffit.defier.tileentity.EnergyProviderTileEntity;
 import net.tiffit.defier.tileentity.EnergyProviderTileEntity.ProviderColor;
-import net.tiffit.tiffitlib.RegistryHelper.ISpecialItemRender;
 
-public class EnergyProviderBlock extends Block implements ITileEntityProvider, ISpecialItemRender{
+public class EnergyProviderBlock extends Block implements ITileEntityProvider{
 
 	protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 2 / 16D, 1D);
 	protected static final AxisAlignedBB POLE_AABB = new AxisAlignedBB(7 / 16D, 0 / 16D, 7 / 16D, 9 / 16D, 12 / 16D, 9 / 16D);
@@ -125,11 +122,6 @@ public class EnergyProviderBlock extends Block implements ITileEntityProvider, I
 			InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(DefierItems.energystar, 1, i));
 		}
 		super.breakBlock(worldIn, pos, state);
-	}
-
-	@Override
-	public IItemRenderer getItemRender() {
-		return new RenderEnergyProviderItem();
 	}
 
 }

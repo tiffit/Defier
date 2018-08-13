@@ -32,7 +32,5 @@ public class DefierRecipeWrapper implements IRecipeWrapper {
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 		minecraft.fontRenderer.drawStringWithShadow("RF: " + TiffitLib.LARGE_NUMBER.format(recipe.getCost()), 14, 43, 0xffffff);
 	}
-
-	
 	
 }

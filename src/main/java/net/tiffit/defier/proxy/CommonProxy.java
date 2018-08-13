@@ -2,7 +2,9 @@ package net.tiffit.defier.proxy;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.util.datafix.DataFixer;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -77,7 +79,6 @@ public class CommonProxy {
     	helper.register(new BatteryItem("good", 100_000));
     	helper.register(new BatteryItem("great", 1_000_000));
     	helper.register(new BatteryItem("amazing", 1_000_000_000));
-    }
-    
+    }    
 }
 

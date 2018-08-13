@@ -33,18 +33,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.tiffit.defier.container.CompressorContainer;
-import net.tiffit.defier.container.DefierContainer;
-import net.tiffit.defier.container.PatternMolderContainer;
 import net.tiffit.defier.event.DefierRecipeRegistryEvent;
-import net.tiffit.defier.gui.CompressorGui;
-import net.tiffit.defier.gui.DefierGui;
-import net.tiffit.defier.gui.PatternMolderGui;
 import net.tiffit.defier.proxy.CommonProxy;
 import net.tiffit.defier.support.top.TOPFunc;
-import net.tiffit.defier.tileentity.CompressorTileEntity;
-import net.tiffit.defier.tileentity.DefierTileEntity;
-import net.tiffit.defier.tileentity.PatternMolderTileEntity;
 import net.tiffit.tiffitlib.GuiManager;
 import net.tiffit.tiffitlib.GuiManager.GuiElement;
 
@@ -53,8 +44,8 @@ import net.tiffit.tiffitlib.GuiManager.GuiElement;
 public class Defier {
 	public static final String MODID = "defier";
 	public static final String NAME = "Defier";
-	public static final String VERSION = "1.4.1";
-	public static final String DEPENDENCIES = "required-after:codechickenlib;required-after:redstoneflux;required-after:tiffitlib;";
+	public static final String VERSION = "1.4.2";
+	public static final String DEPENDENCIES = "required-after:codechickenlib;required-after:redstoneflux;required-after:tiffitlib;before:guideapi;";
 	public static final String CONFIG_GUI_FACTORY = "net.tiffit.defier.client.gui.config.ConfigGuiFactory";
 
 	public static CreativeTabs CTAB = new CreativeTabs("defier") {
@@ -86,7 +77,6 @@ public class Defier {
 		config = new Configuration(new File(configFolder, "defier.cfg"), "1.0.0", true);
 		ConfigData.load(config);
 		logger = event.getModLog();
-		
 		FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", TOPFunc.class.getName());
 		
 		proxy.preInit(event);
@@ -95,12 +85,20 @@ public class Defier {
 	@EventHandler
 	public void init(FMLInitializationEvent e) {
 		GuiManager guihandler = new GuiManager();
-		guihandler.registerElement(new GuiElement(CompressorTileEntity.class, CompressorContainer.class, CompressorGui.class));
-		guihandler.registerElement(new GuiElement(DefierTileEntity.class, DefierContainer.class, DefierGui.class));
-		guihandler.registerElement(new GuiElement(PatternMolderTileEntity.class, PatternMolderContainer.class, PatternMolderGui.class));
+		try {
+			registerGuiElement(guihandler, "Compressor");
+			registerGuiElement(guihandler, "Defier");
+			registerGuiElement(guihandler, "PatternMolder");
+		} catch (ClassNotFoundException ex) {
+			//ex.printStackTrace();
+		}
 		NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, guihandler);
 		proxy.init(e);
 		MinecraftForge.EVENT_BUS.post(new DefierRecipeRegistryEvent());
+	}
+	
+	private void registerGuiElement(GuiManager manager, String name) throws ClassNotFoundException{
+		manager.registerElement(new GuiElement("net.tiffit.defier.", "tileentity."+name+"TileEntity", "container."+name+"Container", "container."+name+"Gui"));
 	}
 
 	public void syncConfig() {
