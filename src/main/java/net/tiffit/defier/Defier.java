@@ -45,7 +45,7 @@ public class Defier {
 	public static final String MODID = "defier";
 	public static final String NAME = "Defier";
 	public static final String VERSION = "1.4.2";
-	public static final String DEPENDENCIES = "required-after:codechickenlib;required-after:redstoneflux;required-after:tiffitlib;before:guideapi;";
+	public static final String DEPENDENCIES = "required-after:codechickenlib;required-after:redstoneflux;required-after:tiffitlib@[1.0.1,);before:guideapi;";
 	public static final String CONFIG_GUI_FACTORY = "net.tiffit.defier.client.gui.config.ConfigGuiFactory";
 
 	public static CreativeTabs CTAB = new CreativeTabs("defier") {
