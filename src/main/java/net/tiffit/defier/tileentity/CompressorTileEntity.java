@@ -44,7 +44,7 @@ public class CompressorTileEntity extends RFTileEntity implements IEnergyReceive
     	if(finished)return;
     	ItemStack is = itemStackHandler.getStackInSlot(0);
     	if(ConfigData.isCompressorBlacklisted(is))return;
-    	if(is != null && progress > 0){
+    	if(!is.isEmpty() && progress > 0){
     		if(!getWorld().isRemote){
     			int itemSize = 1;
     			if(is.getItem() == DefierItems.largemass)itemSize = ConfigData.MASSIVESTAR_SIZE;

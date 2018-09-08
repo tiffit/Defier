@@ -14,7 +14,6 @@ import net.tiffit.defier.client.render.RenderDefierItem;
 import net.tiffit.defier.client.render.RenderEnergyProviderItem;
 import net.tiffit.defier.client.tesr.DefierTESR;
 import net.tiffit.defier.client.tesr.EnergyProviderTESR;
-import net.tiffit.defier.item.DefierItem;
 import net.tiffit.defier.tileentity.DefierTileEntity;
 import net.tiffit.defier.tileentity.EnergyProviderTileEntity;
 import net.tiffit.tiffitlib.client.ClientRegistryHelper;
