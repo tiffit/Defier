@@ -24,10 +24,14 @@ public class ConfigData {
 	public static int MODIFIER_ATTACK_COST;
 	public static int MODIFIER_ATTACK_RANGE;
 	
+	public static boolean DEFAULT_PATTERNS;
+	
 	public static ConfigCategory _CATEGORY_BALANCE;
+	public static ConfigCategory _CATEGORY_RECIPES;
 	
 	public static void load(Configuration config){
 		_CATEGORY_BALANCE = config.getCategory("Balance");
+		_CATEGORY_RECIPES = config.getCategory("Recipe");
 		COMPRESSOR_ITEM_AMOUNT = config.getInt("compressor.item_amount", _CATEGORY_BALANCE.getName(), 2_000_000_000, 1, Integer.MAX_VALUE, "The amount of items needed to create a defier core.");
 		COMPRESSOR_RF_USAGE = config.getInt("compressor.rf_usage", _CATEGORY_BALANCE.getName(), 100_000, 1, Integer.MAX_VALUE, "The max amount of RF the compressor can use per tick.");
 		COMPRESSOR_EXPLODE = config.getBoolean("compressor.explode", _CATEGORY_BALANCE.getName(), true, "Should the compressor create an explosion when it runs out of RF?");
@@ -45,7 +49,8 @@ public class ConfigData {
 		MODIFIER_ATTACK_COST = config.getInt("modifier.attack.rfcost", _CATEGORY_BALANCE.getName(), 100_000, 1, Integer.MAX_VALUE, "How much RF should the attack modifier cost?");
 		MODIFIER_ATTACK_RANGE = config.getInt("modifier.attack.range", _CATEGORY_BALANCE.getName(), 5, 1, 20, "What is the max range of the attack modifier?");
 
-		
+		DEFAULT_PATTERNS = config.getBoolean("patterns.default", _CATEGORY_RECIPES.getName(), true, "Set false to disable default patterns.");
+
 		config.save();
 	}
 	

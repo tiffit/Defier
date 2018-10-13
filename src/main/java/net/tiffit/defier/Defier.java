@@ -44,7 +44,7 @@ import net.tiffit.tiffitlib.GuiManager.GuiElement;
 public class Defier {
 	public static final String MODID = "defier";
 	public static final String NAME = "Defier";
-	public static final String VERSION = "1.4.2c";
+	public static final String VERSION = "1.4.3";
 	public static final String DEPENDENCIES = "required-after:codechickenlib;required-after:redstoneflux;required-after:tiffitlib@[1.0.1,);before:guideapi;";
 	public static final String CONFIG_GUI_FACTORY = "net.tiffit.defier.client.gui.config.ConfigGuiFactory";
 
@@ -109,6 +109,7 @@ public class Defier {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void registerRecipes(DefierRecipeRegistryEvent e) {
+		if(!ConfigData.DEFAULT_PATTERNS)return;
 		e.registerRecipe(MODID, Item.getItemFromBlock(Blocks.COBBLESTONE), 1_000L);
 		e.registerRecipe(MODID, Item.getItemFromBlock(Blocks.DIRT), 10_000L);
 		e.registerRecipe(MODID, Item.getItemFromBlock(Blocks.SAND), 12_500L);
